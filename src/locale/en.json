@@ -1,0 +1,98 @@
+{
+  "message": "Sample Text!!",
+  "account": {
+    "error": {
+      "loginFailed": "Login error. Please log in again."
+    }
+  },
+  "common": {
+    "error": {
+      "blocked": "Access blocked due to frequent API requests.",
+      "system": "System error. Please contact the site administrator.",
+      "unknown": "Unknown error. Please contact the site administrator.",
+      "required" : "This field is required.",
+      "invalidEmail" : "Invalid email address."
+    }
+  },
+  "emailAuth": {
+    "error": {
+      "invalid" : "invalid email.",
+      "invalidToken" : "Incorrect email token.",
+      "expire": "Expired email token. Please request verification again.",
+      "exist": "Authentication processing is already complete."
+    }
+  },
+  "login": {
+    "error": {
+      "contain" : "Your password must contain 8-16 characters.",
+      "noExist" : "Unregistered email.",
+      "incorrect" : "Incorrect password.",
+      "errCount": "{number} times error.",
+      "blockedAcc": "This account has been blocked from accessing.",
+      "exceed" : "You can not log in with more than the number of passwords entered."
+    }
+  },
+  "signUp": {
+    "error": {
+      "invalid": "This email address is invalid.",
+      "invalidPwd": "For account security, your password must contain 8-16 characters of a combination of letters, numbers, and special characters.",
+      "notMatch": "Password does not match.",
+      "incorrect": "Incorrect password.",
+      "exist": "This email address has already been registered.",
+      "failSendMail": "Failed to send email."
+    },
+    "notifyMail": "To activate your NEXBILL account, we sent you a<br/>verification email.<br/><br/>Please check your email."
+  },
+  "password": {
+      "error": {
+        "invalidPwd": "For account security, your password must contain 8-16 characters of a combination of letters, numbers, and special characters.",
+        "notMatch": "Password does not match.",
+        "enter":"Please enter a password.",
+        "invalidToken": "Invalid login token",
+        "invalidOtp": "Invalid OTP"
+      }
+  },
+  "otp":{
+      "error":{
+        "enter" : "Please enter your OTP authentication number.",
+        "exist" : "A One-Time Password (OTP) authentication has been enabled.",
+        "noExist": "Unregistered OTP.",
+        "incorrect" : "OTP authentication numbers do not match.",
+        "invalidToken": "Invalid login token",
+        "invalidOtp": "Invalid OTP",
+        "invalidSecret": "Invalid Secret"
+      }
+  },
+  "wallet": {
+    "error": {
+      "invalidCoin": "Invalid CoinID",
+      "duplicatedCoin": "Duplicated CoinID",
+      "invalidAddress" : "Invalid withdrawal Address",
+      "checkMinWithdraw" : "Please check the minimum withdrawal quantity.",
+      "errorQuantity" : "Error quantity",
+      "errorMinQuantity" : "Error min quantity",
+      "onetimeMax" : "Maximum one-time maximum withdrawal",
+      "noavailable" : "No available quantity",
+      "dayMax" : "Exceeding maximum daily withdrawal amount",
+      "errorEmail" : "Error sending email verification",
+      "invalidOtp" : "Invalid Otp"
+    }
+  },
+    "exchange": {
+        "buy": "Buy {coin}",
+        "sell": "Sell {coin}",
+        "loginBuy": "Login or Signup to buy",
+        "loginSell": "Login or Signup to sell",
+        "notEnough": "Insufficient funds.",
+        "minOrder": "Please check the minimum order quantity.",
+        "enterValue": "Please enter the amount and quantity.",
+        "orderComplete": "Order complete",
+        "exchangeComplete": "Exchange complete",
+        "cancelOrder": "Cancel order",
+        "cancelOrderRequest": "Requested your order canceled.",
+        "cancelOrderComplete": "Your order has been cancelled.",
+        "error": {
+            "invalidMarket": "Invaild market id"
+        }
+    }
+}
