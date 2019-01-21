@@ -83,7 +83,7 @@ export default {
                   const result = response.data.result
 
                   if (result.code == 1) {
-                      this.popupError(this.$t('signUp.error.notifyMail'), '', false)
+                      this.popupError(this.$t('signUp.notifyMail'), '', false)
                   }
                   else {
                       switch (result.code) {

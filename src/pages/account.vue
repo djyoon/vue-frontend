@@ -44,7 +44,8 @@
                             <div class="mypage__item-value float-left mypage__item-value--deepcolor">To be used for security verification when making withdrawals and changing security settings.</div>
                             <span class="full-right">
                             <img src="../images/icon/success-icon.png" alt="" v-if="memLevel >= 1">
-                            <a class="textbutton" v-if="memLevel < 1" @click="retryEmailAuth">Require resend</a>
+                            <button class="textbutton" v-if="memLevel < 1" @click="retryEmailAuth">Require
+                                resend</button>
                           </span>
                         </li>
                         <li class="mypage__item clearfix mypage__item--Security">
@@ -108,8 +109,7 @@
             <div class="blackbg"></div>
             <div class="modal">
                 <div class="text-center">
-                    <p class="modal__desc">
-                        {{ error_common }}
+                    <p class="modal__desc" v-html="error_common">
                     </p>
                     <div class="modal__btnbox">
                         <button class="btn btn--confirm btn--single" @click="onErrorResponse">OK</button>
