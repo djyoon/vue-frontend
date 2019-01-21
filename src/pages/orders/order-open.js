@@ -38,6 +38,15 @@ export default {
         this.typeDeptMenu = common.typeDeptMenu
         this.requestOrderOpen()
     },
+    filters : {
+        changeSlash : function(value) {
+            if(common.isEmpty(value)){
+                return ''
+            } else {
+                return value.replace('_','/')
+            }
+        }
+    },
     methods: {
         goPrevPage() {
             if (this.prevPage <= 0) return
