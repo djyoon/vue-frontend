@@ -44,7 +44,10 @@
                                     <span class="unit2">≈ {{ coin.volume_usd | numberFormat('0,000.0000') }} USD</span>
                                 </p>
                                 <p class="col5 text-right">
-                                    <button class="textbutton" @click="showDeposit(coin.coin_id, coin.coin_name, coin.address)" :disabled=" coin.coin_id == 'USD'" :class="{ disabled:  coin.coin_id == 'USD'}">Deposit</button>
+                                    <button class="textbutton" @click="showDeposit(coin.coin_id,
+                                    coin.coin_name, coin.address)" :disabled=" coin.coin_id
+                                     == 'USD'" :class="{ disabled:
+                                     coin.coin_id == 'USD'}">Deposit</button>
                                     <button class="textbutton" @click="showWithdraw(coin.coin_id,
                                     coin.min_withdraw, coin.withdraw_fee, coin.price_usd, coin.available)"
                                             :class="{ disabled: coin.available <= 0 || coin.coin_id == 'USD' }"
@@ -75,7 +78,8 @@
                     </div>
                     <div class="modal__btnbox">
                         <button class="btn btn--cancel btn--half" @click="hideDeposit">Cancel</button>
-                        <button class="btn btn--confirm btn--half" @click="showAddress" :disabled="api_calling">View</button>
+                        <button class="btn btn--confirm btn--half" @click="showAddress"
+                                :disabled="api_calling">View</button>
                     </div>
                 </div>
             </div>
@@ -137,7 +141,7 @@
                             </div>
                             <div class="form__group">
                                 <label for="" class="form__title">Withdrawal Amount (min:{{ min_withdraw |
-                                numberFormat('0,000.00000000') }})</label>
+                                decimalToString }})</label>
                                 <div class="form__box">
                                     <input type="number" class="form__input" v-model="withdrawal_amount" :class="{
                                         wrong: error_withdraw.length > 0 }">
@@ -175,7 +179,9 @@
                         Once your withdrawal request has been approved, please go to your email and click the link inside to confirm your request
                     </p>
                     <p class="modal__desc2">
-                        {{ coin_id }}'s one time minimum withdrawal is 000 {{ coin_id }}, maximum withdrawal is 000000 {{ coin_id }}, fee is 00 {{ coin_id }}
+                        {{ coin_id }}'s one time minimum withdrawal is {{ min_withdraw | decimalToString }}
+                        {{ coin_id }}, maximum withdrawal is {{ onetime_limit | numberFormat('0,000.00000000') }}
+                        {{ coin_id }}, fee is {{ withdraw_fee | decimalToString }}{{ coin_id }}
                     </p>
                     <p class="modal__desc2">
                         If your withdrawal request requires approval from us, please click the link in the withdrawal confirmation email and wait for the confirmation call from our customer service.

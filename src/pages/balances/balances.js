@@ -29,6 +29,7 @@ export default {
             address : '',
             usdTotal : 0,
             otp_number : '',
+            qr_code : '',
 
             //출금
             to_address : '',
@@ -59,7 +60,16 @@ export default {
         }
     },
     components : {
-      OtpAuth
+        OtpAuth
+    },
+    filters : {
+      decimalToString : function(value) {
+          if(common.isEmpty(value)){
+              return '0,000.00000000'
+          } else {
+              return value.toString()
+          }
+      }
     },
     mounted: function () {
 
@@ -80,12 +90,15 @@ export default {
                 }
             }
         },
-
         withdrawal_amount : function() {
-            let value = this.withdrawal_amount
-            if(!common.isEmpty(value)){
-                if(this.min_withdraw > Number(value)) {
+            let amount = new Decimal(this.withdrawal_amount).times(this.price_usd)
+            if(!common.isEmpty(amount)){
+                if(amount.comparedTo(this.min_withdraw.times(this.price_usd)) < 0) {
                     this.error_withdraw = this.$t('wallet.error.checkMinWithdraw')
+                } else if(this.balance.comparedTo(this.withdrawal_amount) < 0) {
+                    this.error_withdraw = this.$t('wallet.error.noavailable')
+                } else if(amount.comparedTo(this.withdraw_max_crypto) > 0) {
+                    this.error_withdraw = this.$t('wallet.error.onetimeMax')
                 } else {
                     this.error_withdraw = ''
                     this.receive_amount = Decimal.sub(this.withdrawal_amount, this.withdraw_fee)
@@ -98,12 +111,13 @@ export default {
     },
     methods: {
         showDeposit: function (coin_id, coin_name, address) {
-            this.address = address
+
             this.coin_id = coin_id
             this.coin_name = coin_name
-            this.qr_code = this.requestQrCode(address)
-            this.visibleDeposit = true
+            this.address = address
+
             this.checkShowAddress = false
+            this.visibleDeposit = true
         },
         hideDeposit: function () {
             this.visibleDeposit = false
@@ -112,17 +126,20 @@ export default {
             if (!this.checkShowAddress) {
                 return
             }
+            this.qr_code = ''
+            this.visibleDeposit = false
+            this.visibleAddress = true
 
-            this.hideDeposit()
-
-            if(common.isEmpty(this.address))  {
+            if(common.isEmpty(this.address)){
                 this.requestAddress()
+            } else {
+                this.requestQrCode(this.address)
             }
-            else {
-                this.visibleAddress = true
-            }
+
+
         },
         hideAddress: function () {
+            this.requestBalance()
             this.visibleAddress = false
         },
         showWithdraw: function (coin_id, limit, fee, usd, balance) {
@@ -138,6 +155,8 @@ export default {
             this.withdraw_fee = fee
             this.price_usd = usd
             this.balance = balance
+            // 1회출금제한
+            this.onetime_limit = new Decimal(this.withdraw_max_crypto).dividedBy(this.price_usd)
             this.visibleWithdraw = true
         },
         hideWithdraw: function () {
@@ -173,7 +192,6 @@ export default {
 
                             row.min_withdraw = new Decimal(row.min_withdraw)
                             row.withdraw_fee = new Decimal(row.withdraw_fee)
-
                             row.volume = Decimal.add(row.available, row.frozen)
                             row.volume_usd = row.volume.times(row.price_usd)
                             this.price_usd = row.price_usd
@@ -214,23 +232,16 @@ export default {
         otpAuthCheck : function() {
 
             this.memLevel = this.$store.state.memLevel
-            this.onetime_limit = new Decimal(this.withdraw_max_crypto).times(this.price_usd)
-            this.error_withdraw = ""
 
-            if(this.balance.comparedTo(this.withdrawal_amount) < 0) {
-                this.error_withdraw = this.$t('wallet.error.noavailable')
-            }
-            else if(this.onetime_limit.comparedTo(this.withdrawal_amount) < 0) {
-                this.error_withdraw = this.$t('wallet.error.onetimeMax')
-            }
-            else {
-                if(this.error_address.length <= 0 && this.error_withdraw.length <= 0){
-                    if(this.memLevel >= 2) {
-                        this.visibleWithdraw = false
-                        this.visibleOtpAuth = true
-                    } else {
-                        this.requestWithdraw()
-                    }
+            if(!common.isEmpty(this.to_address)
+                && !common.isEmpty(this.withdrawal_amount)
+                && this.error_address.length <= 0
+                && this.error_withdraw.length <= 0){
+                if(this.memLevel >= 2) {
+                    this.visibleWithdraw = false
+                    this.visibleOtpAuth = true
+                } else {
+                    this.requestWithdraw()
                 }
             }
         },
@@ -335,8 +346,10 @@ export default {
                 .then((response) => {
                     this.api_calling = false
                     const result = response.data.result
+
                     if(result.code == 1) {
                         this.address = result.data.address
+                        this.requestQrCode(this.address)
                         this.visibleAddress = true
                     }
                     else {
@@ -371,8 +384,7 @@ export default {
                 })
         },
         requestQrCode : function(address) {
-            return "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl="+address
-
+            this.qr_code = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl="+address
         },
         handleResize() {
             this.isMobile = window.innerWidth < 768

@@ -53,7 +53,8 @@
                         <div class="openorder-table__body clearfix" v-for="(order, index) in orders" :key="index">
                             <div class="openorder-table__row clearfix">
                                 <p class="col1 text-left"><span class="mobile-unit">Date</span>{{ order.date | moment("MMM D YYYY HH:MM:SS") }}</p>
-                                <p class="col2 text-left"><span class="mobile-unit">Pairs</span>{{ order.market }}</p>
+                                <p class="col2 text-left"><span class="mobile-unit">Pairs</span>{{ order.market |
+                                changeSlash }}</p>
                                 <p class="col3 text-left upper-case" :class="{'color-green': order.type === 'buy', 'color-red': order.type === 'sell'}"><span class="mobile-unit">Type</span>{{ order.type }}</p>
                                 <p class="col4 text-right">
                                     <span class="mobile-unit">Price({{ order.sellcoin }})</span>

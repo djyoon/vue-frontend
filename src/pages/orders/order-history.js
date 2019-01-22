@@ -33,6 +33,15 @@ export default {
 
         }
     },
+    filters : {
+        changeSlash : function(value) {
+            if(common.isEmpty(value)){
+                return ''
+            } else {
+                return value.replace('_','/')
+            }
+      }
+    },
     mounted: function() {
         this.marketDeptMenu = common.marketDeptMenu
         this.typeDeptMenu = common.typeDeptMenu

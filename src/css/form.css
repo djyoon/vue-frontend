@@ -234,6 +234,7 @@ select[multiple]
 .modal__btnbox{margin-top:2em;}
 .modal__btnbox:after{content:'';display:block;clear:both;}
 .modal__qr{margin-top:1em;}
+.modal__code{font-size:13px;}
 .modal__qr .textbutton{margin-top:.5em;display:block;}
 .modal__qrimg{width:140px;display:inline-block;height:140px;margin:1em 0 .5em;}
 .modal__desc2{text-align:left;font-size:12px;line-height:1.2em;margin-bottom:.5em;}
