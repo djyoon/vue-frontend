@@ -41,7 +41,7 @@
       "exist": "This email address has already been registered.",
       "failSendMail": "Failed to send email."
     },
-    "notifyMail": "To activate your NEXBILL account, we sent you a<br/>verification email.<br/><br/>Please check your email."
+    "notifyMail": "To activate your NEXBILL account,<br/>we sent you a verification email.<br/><br/>Please check your email."
   },
   "password": {
       "error": {
