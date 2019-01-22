@@ -78,7 +78,7 @@
                     </div>
                     <div class="modal__btnbox">
                         <button class="btn btn--cancel btn--half" @click="hideDeposit">Cancel</button>
-                        <button class="btn btn--confirm btn--half" @click="showAddress()"
+                        <button class="btn btn--confirm btn--half" @click="showAddress"
                                 :disabled="api_calling">View</button>
                     </div>
                 </div>
