@@ -9,7 +9,7 @@ export default {
 
             coin_id: '',
             isMobile: false,
-            historys: [],
+            history: [],
 
             //Sort
             sortType: 'time',
@@ -17,6 +17,8 @@ export default {
                 'time': -1,
                 'coin_id': -1,
             },
+
+            status_strings: ['Pending', 'Completed', 'Canceled'],
 
             // Paging
             totalCount: 0,
@@ -79,9 +81,9 @@ export default {
                     this.resetPage()
 
                     if (result.code == 1) {
-                        this.historys = []
+                        this.history = []
                         result.data.rows.forEach((row) => {
-                            this.historys.push({
+                            this.history.push({
                                 time: row.time,
                                 coin_icon: this.isMobile ? coinImages.big[row.coin_id] : coinImages.normal[row.coin_id],
                                 coin_id: row.coin_id,
@@ -89,7 +91,7 @@ export default {
                                 amount: row.amount,
                                 confirm: row.confirm + "/" + row.max_confirm,
                                 status: row.status,
-
+                                status_str: this.status_strings[row.status],
                                 txid: row.txid,
                                 link: coinUrl.url[row.coin_id] && row.status == 'complete' ? coinUrl.url[row.coin_id] + row.txid : false
                             })
@@ -176,7 +178,7 @@ export default {
             this.sortList(type)
         },
         sortList(type) {
-            this.historys = this.historys.sort(
+            this.history = this.history.sort(
                 (a, b) => {
                     const order = this.sortOrder[type]
                     if (type === 'coin_id') {

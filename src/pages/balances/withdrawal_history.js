@@ -9,7 +9,7 @@ export default {
 
         coin_id: '',
         isMobile: false,
-        historys: [],
+        history: [],
 
         //Sort
         sortType: 'time',
@@ -18,12 +18,7 @@ export default {
             'coin_id': -1,
         },
 
-        stats : {
-            '0' : 'waiting confirmation',
-            '1' : 'pending',
-            '2' : 'complete',
-            '3' : 'cancel'
-        },
+        status_strings: ['Confirming', 'Pending', 'Completed', 'Canceled'],
 
         // Paging
         totalCount: 0,
@@ -82,17 +77,18 @@ export default {
                   this.resetPage()
 
                   if (result.code == 1) {
-                      this.historys = []
+                      this.history = []
                       result.data.rows.forEach((row) => {
-                          this.historys.push({
+                          this.history.push({
                               time: row.time,
                               coin_icon: this.isMobile ? coinImages.big[row.coin_id] : coinImages.normal[row.coin_id],
                               coin_id: row.coin_id,
                               address_to: row.address_to,
                               amount: row.amount,
-                              status: this.stats[row.status] ? this.stats[row.status] : row.status,
+                              status: row.status,
+                              status_str: this.status_strings[row.status],
                               txid: row.txid,
-                              link: coinUrl.url[row.coin_id] && this.stats[row.status] == 'complete' ? coinUrl.url[row.coin_id] + row.txid : false
+                              link: coinUrl.url[row.coin_id] && row.status == 2 ? coinUrl.url[row.coin_id] + row.txid : false
                           })
                       })
                   }
@@ -178,7 +174,7 @@ export default {
           this.sortList(type)
       },
       sortList(type) {
-          this.historys = this.historys.sort(
+          this.history = this.history.sort(
               (a, b) => {
                   const order = this.sortOrder[type]
                   if (type === 'coin_id') {

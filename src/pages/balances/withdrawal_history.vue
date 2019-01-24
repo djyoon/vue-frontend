@@ -26,38 +26,33 @@
                             <h2 class="col6 text-right">Action</h2>
                         </div>
                         <div class="openorder-table__body clearfix">
-                            <div class="openorder-table__row clearfix" v-for="history in historys" :key="history.index">
+                            <div class="openorder-table__row clearfix" v-for="row in history" :key="row.index">
                                 <p class="col1 text-left">
-                                    {{ history.time | moment("MMM D YYYY HH:MM:SS") }}
+                                    {{ row.time | moment("MMM D YYYY HH:MM:SS") }}
                                 </p>
                                 <p class="col1 text-left logo">
-                                    <img :src="history.coin_icon">
-                                    {{ history.coin_id }}
+                                    <img :src="row.coin_icon">
+                                    {{ row.coin_id }}
                                 </p>
                                 <p class="col3 text-left popbox">
-                                    {{ history.address_to }}
+                                    {{ row.address_to }}
                                 </p>
-                                <p class="col4 text-left">
-                                    {{ history.amount | numberFormat('0,000.00000000')}}
+                                <p class="col4 text-right">
+                                    {{ row.amount | numberFormat('0,000.00000000')}}
                                 </p>
                                 <p class="col5 text-left">
-                                    {{ history.status }}
+                                    {{ row.status_str }}
                                 </p>
                                 <p class="col6 text-right">
-                                    <a class="textbutton" :href="history.link" :disabled="history.link"
-                                       :class="{ disabled: history.link == false }" target="_blank">
-                                        View</a>
-                                <span v-if="history.status == 'complete' ">
-                                    <popper trigger="hover" :options="{placement: 'bottom'}">
-                                        <div class="popper">
-                                            {{ history.txid }}
-                                        </div>
-                                        <button class="textbutton" slot="reference" :disabled="true"
-                                                :class="{ disabled: true }">
-                                        TXID
-                                    </button>
-                                    </popper>
-                                 </span>
+                                    <a class="textbutton" :href="row.link" :disabled="row.link"
+                                       :class="{ disabled: row.link == false }" target="_blank">View</a>
+                                    <span v-if="row.status == 2 ">
+                                        <popper trigger="hover" :options="{placement: 'bottom'}">
+                                            <div class="popper">{{ row.txid }}</div>
+                                            <button class="textbutton" slot="reference" :disabled="true"
+                                                :class="{ disabled: true }">TXID</button>
+                                        </popper>
+                                   </span>
                                 </p>
                             </div>
                         </div>

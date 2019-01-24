@@ -14,10 +14,15 @@ export default {
     .then((response) => {
       const result = response.data.result
       if(result.code == 1) {
-        if(this.$store.state.isLoin)
+        if(this.$store.state.isLoin) {
+          if(result.auth_type == 3)
+            this.$router.push('/withdrawal_history')
+          else
             this.$router.push('/account')
-        else
+        }
+        else {
             this.$router.push('/login')
+        }
       }
       else {
         switch(result.code) {
