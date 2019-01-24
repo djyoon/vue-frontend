@@ -60,6 +60,9 @@ export default {
 
         this.reloadAccountInfo()
     },
+    beforeDestroy: function() {
+        window.removeEventListener('resize', this.handleResize)
+    },
     computed: {
         visibleTabTrade: function() {
             return !this.isMobile || this.currentMobileTab == 0
