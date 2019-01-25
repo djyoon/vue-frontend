@@ -2,7 +2,8 @@
     <div class="container container--padding-none">
         <div class="tablepage">
             <div class="wrap clearfix">
-                <div class="tablepage__leftmenu">
+                <div class="tablepage__leftmenu" :class="{'tablepage__leftmenu__mshow': isTablet && visibleSideMenu}">
+                    <button class="tablepage__leftmenu__toggle" @click="toggleSideMenu()"></button>
                     <h1 class="tablepage__lnb-title">Balances</h1>
                     <ul class="tablepage__lnb">
                         <li class="tablepage__li"><router-link to="/balances" class="tablepage__link active">Exchange Balance</router-link></li>
@@ -20,38 +21,35 @@
                             <span class="checkbox__icon" ></span> Hide zero asset
                         </label>
                     </div>
-                    <div class="openorder-table">
+                    <div class="openorder-table openorder-table--balance">
                         <div class="openorder-table__header clearfix">
-                            <h2 class="col1 text-left"><button class="sort-btn" @click="setSortOrder('coin_id')">Currency
-                            </button></h2>
-                            <h2 class="col2 text-right">Frozen</h2>
-                            <h2 class="col3 text-right">Available</h2>
-                            <h2 class="col4 text-right"><button class="sort-btn" @click="setSortOrder('volume')">
-                                Volume</button></h2>
-                            <h2 class="col4 text-right">Action</h2>
+                            <h2 class="col1 text-left"><button class="sort-btn" @click="setSortOrder('coin_id')">Currency</button></h2>
+                            <h2 class="col2 text-right"><button class="sort-btn" @click="setSortOrder('volume')">Volume</button></h2>
+                            <h2 class="col3 text-right" v-if="!isMobile">Frozen</h2>
+                            <h2 class="col4 text-right" v-if="!isMobile">Available</h2>
+                            <h2 class="col5 text-right" v-if="!isMobile">Action</h2>
                         </div>
-                        <div class="openorder-table__body clearfix" v-for="coin in coin_list" :key="coin.index">
-                            <div class="openorder-table__row clearfix">
+                        <div class="openorder-table__body clearfix" v-for="row in coin_list" :key="row.index">
+                            <div class="openorder-table__balance--row clearfix" @click="row.selected = !row.selected">
                                 <p class="col1 text-left logo">
-                                    <img :src="coin.coin_icon">
-                                    {{ coin.coin_id }}
-                                    <span class="unit2">{{ coin.coin_name }} </span>
+                                    <img :src="row.coin_icon">
+                                    <span class="coin_id">{{ row.coin_id }}</span>
+                                    <span class="unit2">{{ row.coin_name }}</span>
                                 </p>
-                                <p class="col2 text-right">{{ coin.frozen | numberFormat('0,000.00000000') }}</p>
-                                <p class="col3 text-right">{{ coin.available | numberFormat('0,000.00000000') }}</p>
-                                <p class="col4 text-right">
-                                    {{ coin.volume | numberFormat('0,000.00000000') }}
-                                    <span class="unit2">≈ {{ coin.volume_usd | numberFormat('0,000.0000') }} USD</span>
+                                <p class="col2 text-right">
+                                    {{ row.volume | numberFormat('0,000.00000000') }}
+                                    <span class="unit2">≈ {{ row.volume_usd | numberFormat('0,000.0000') }} USD</span>
                                 </p>
+                                <p class="col3 text-right"><span class="mobile-label">Frozen</span>{{ row.frozen | numberFormat('0,000.00000000') }}</p>
+                                <p class="col4 text-right"><span class="mobile-label">Available</span>{{ row.available | numberFormat('0,000.00000000') }}</p>
                                 <p class="col5 text-right">
-                                    <button class="textbutton" @click="showDeposit(coin.coin_id,
-                                    coin.coin_name, coin.address)" :disabled=" coin.coin_id
-                                     == 'USD'" :class="{ disabled:
-                                     coin.coin_id == 'USD'}">Deposit</button>
-                                    <button class="textbutton" @click="showWithdraw(coin.coin_id,
-                                    coin.min_withdraw, coin.withdraw_fee, coin.price_usd, coin.available)"
-                                            :class="{ disabled: coin.available <= 0 || coin.coin_id == 'USD' }"
-                                            :disabled="coin.available <= 0 || coin.coin_id == 'USD' ">Withdraw</button>
+                                    <button class="textbutton"
+                                        @click="showDeposit(row.coin_id, row.coin_name, row.address)"
+                                        :disabled=" row.coin_id == 'USD'"
+                                        :class="{ disabled: row.coin_id == 'USD'}">Deposit</button>
+                                    <button class="textbutton" @click="showWithdraw(row.coin_id, row.min_withdraw, row.withdraw_fee, row.price_usd, row.available)"
+                                        :class="{ disabled: row.available <= 0 || row.coin_id == 'USD' }"
+                                        :disabled="row.available <= 0 || row.coin_id == 'USD' ">Withdraw</button>
                                 </p>
                             </div>
                         </div>

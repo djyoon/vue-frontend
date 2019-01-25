@@ -22,13 +22,19 @@ export default {
     closeLanguageMenu() { this.showLanguageMenu = false },
     toggleLanguageMenu() { this.showLanguageMenu = !this.showLanguageMenu },
     logout() {
+      this.showMobileGnb = false;
       this.$store.commit('logout')
       this.$router.push('/')
       this.closeAccountMenu()
     },
     gotoAccount() {
+      this.showMobileGnb = false;
       this.closeAccountMenu()
       this.$router.push('/account')
+    },
+    gotoPage(path) {
+      this.showMobileGnb = false;
+      this.$router.push('/' + path)
     },
     checkLogin() {
       if(this.$store.state.isLoin) {

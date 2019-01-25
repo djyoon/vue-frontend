@@ -11,7 +11,8 @@
       "system": "System error. Please contact the site administrator.",
       "unknown": "Unknown error. Please contact the site administrator.",
       "required" : "This field is required.",
-      "invalidEmail" : "Invalid email address."
+      "invalidEmail" : "Invalid email address.",
+      "loginFailed": "You are not login. Please login again."
     }
   },
   "emailAuth": {
@@ -92,7 +93,11 @@
         "cancelOrderRequest": "Requested your order canceled.",
         "cancelOrderComplete": "Your order has been cancelled.",
         "error": {
-            "invalidMarket": "Invaild market id"
+            "invalidMarket": "Invaild market id",
+            "invalidParam": "Invaild parameters",
+            "alreadyCancel": "Already canceled",
+            "alreadyRequest": "Cancellation has already been requested",
+            "alreadyComplete": "The order has already been completed."
         }
     }
 }

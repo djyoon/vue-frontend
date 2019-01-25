@@ -138,23 +138,37 @@ export default {
                     } else {
                         switch (result.code) {
                             case -1:
+                            case -97:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.loginFailed"))
+                                break
                             case -2:
                             case -3:
                             case -4:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.invalidParam"))
+                                break
                             case -5:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyCancel"))
+                                break
                             case -6:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyRequest"))
+                                break
                             case -7:
-                            case -97:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyComplete"))
+                                break
                             case -98:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.blocked"))
+                                break
                             case -99:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.system"))
+                                break
                             default:
-                                // 오류 처리 필요
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.unknown"))
                                 break
                         }
                     }
                 })
                 .catch(() => {
-                    // 오류 처리 필요
+                  this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.unknown"))
                 })
         },
         addAlert: function(type, title, desc) {

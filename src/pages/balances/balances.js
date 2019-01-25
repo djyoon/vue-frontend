@@ -17,10 +17,11 @@ export default {
 
             isChecked: false,
             isMobile: false,
+            isTablet: false,
             api_calling : false,
             checkShowAddress: false,
             checkHideZero: false,
-
+            visibleSideMenu: false,
 
             memLevel : 0,
 
@@ -72,12 +73,10 @@ export default {
       }
     },
     mounted: function () {
-
         this.handleResize()
         window.addEventListener('resize', this.handleResize)
 
         this.requestBalance()
-
     },
     watch: {
         to_address : function(){
@@ -145,10 +144,10 @@ export default {
         showWithdraw: function (coin_id, limit, fee, usd, balance) {
 
             this.to_address = ''
-            this.withdrawal_amount = ''
+            this.withdrawal_amount = 0
             this.error_address = ''
             this.error_withdraw = ''
-            this.receive_amount = ''
+            this.receive_amount = 0
 
             this.coin_id = coin_id
             this.min_withdraw = limit
@@ -196,6 +195,7 @@ export default {
                             row.volume_usd = row.volume.times(row.price_usd)
                             this.price_usd = row.price_usd
                             usdTotal = usdTotal.plus(row.volume_usd)
+                            row.selected = false
 
                             if(!this.checkHideZero || row.volume.comparedTo(0) > 0)
                                 this.coin_list.push(row)
@@ -388,6 +388,10 @@ export default {
         },
         handleResize() {
             this.isMobile = window.innerWidth < 768
+            this.isTablet = window.innerWidth < 1025
+        },
+        toggleSideMenu() {
+            this.visibleSideMenu = !this.visibleSideMenu;
         },
         popupError(message, link, logout) {
             this.has_error = true

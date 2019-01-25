@@ -2,7 +2,8 @@
     <div class="container container--padding-none">
         <div class="tablepage">
             <div class="wrap clearfix">
-                <div class="tablepage__leftmenu">
+                <div class="tablepage__leftmenu" :class="{'tablepage__leftmenu__mshow': isTablet && visibleSideMenu}">
+                    <button class="tablepage__leftmenu__toggle" @click="toggleSideMenu()"></button>
                     <h1 class="tablepage__lnb-title">Balances</h1>
                     <ul class="tablepage__lnb">
                         <li class="tablepage__li"><router-link to="/balances" class="tablepage__link">Exchange Balance</router-link></li>
@@ -16,51 +17,40 @@
                     <br>
                     <div class="openorder-table openorder-table--deposit">
                         <div class="openorder-table__header clearfix">
-                            <h2 class="col1 text-left"><button class="sort-btn" @click="setSortOrder('time')">Date
-                            </button></h2>
-                            <h2 class="col2 text-left"><button class="sort-btn" @click="setSortOrder('coin_id')">Currency</button></h2>
-                            <h2 class="col3 text-left">Address</h2>
-                            <h2 class="col4 text-left">Amount</h2>
-                            <h2 class="col5 text-left">Confirmations</h2>
-                            <h2 class="col6 text-left">Status</h2>
-                            <h2 class="col7 text-right">Action</h2>
+                            <h2 class="col1 text-left"><button class="sort-btn" @click="setSortOrder('time')">Date</button></h2>
+                            <h2 class="col2" :class="{'text-left': !isMobile, 'text-right': isMobile}"><button class="sort-btn" @click="setSortOrder('coin_id')">Currency</button></h2>
+                            <h2 class="col3 text-left" v-if="!isMobile && !isTablet">Address</h2>
+                            <h2 class="col4 text-right" v-if="!isMobile">Amount</h2>
+                            <h2 class="col5 text-left" v-if="!isMobile">Status</h2>
+                            <h2 class="col6 text-right" v-if="!isMobile"></h2>
+                            <h2 class="col7 text-right" v-if="!isMobile">Actions</h2>
                         </div>
                         <div class="openorder-table__body clearfix">
-                            <div class="openorder-table__row clearfix" v-for="row in history" :key="row.index">
+                            <div class="openorder-table__deposit--row clearfix" v-for="row in history" :key="row.index">
                                 <p class="col1 text-left">
-                                    {{ row.time | moment("MMM D YYYY HH:MM:SS") }}
+                                    {{ row.time | moment("MMM D, YYYY HH:MM") }}
                                 </p>
-
-                                <p class="col1 text-left logo">
+                                <p class="col2 text-left logo">
                                     <img :src="row.coin_icon">
                                     {{ row.coin_id }}
                                 </p>
-                                <p class="col3 text-left popbox">
-                                    {{ row.address_to }}
+                                <p class="col3 text-left monospace" v-if="!isTablet">
+                                    {{ row.address_to_short }}
                                 </p>
-                                <p class="col4 text-left">
+                                <p class="col4 text-right">
                                     {{ row.amount | numberFormat('0,000.00000000')}}
                                 </p>
                                 <p class="col5 text-left">
-                                    {{ row.confirm }}
+                                    {{ row.status_str }}<span v-if="row.status == 0">{{ row.confirm }}</span>
                                 </p>
-                                <p class="col6 text-left">
-                                    {{ row.status_str }}
+                                <p class="col6 text-right">
+                                    <popper trigger="hover" :options="{placement: 'bottom'}">
+                                        <div class="popper toolbox-txid">{{ row.txid }}</div>
+                                        <button class="textbutton nowrap" slot="reference">View TXID</button>
+                                    </popper>
                                 </p>
                                 <p class="col7 text-right">
-                                    <a class="textbutton" :href="row.link" :disabled="row.link"
-                                       :class="{ disabled: row.link == false }" target="_blank">View</a>
-
-                                    <span v-if="row.status == 1 ">
-                                    <popper trigger="hover" :options="{placement: 'bottom'}">
-                                        <div class="popper">
-                                            {{ row.txid }}
-                                        </div>
-                                        <button class="textbutton" slot="reference" >
-                                        TXID
-                                    </button>
-                                    </popper>
-                                 </span>
+                                    <a class="textbutton nowrap" :href="row.link" target="_blank">View Details</a>
                                 </p>
                             </div>
                         </div>

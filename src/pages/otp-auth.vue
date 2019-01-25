@@ -22,7 +22,7 @@
                 <button type="button" class="btn btn--cancel float-left btn--half" @click="cancel">Cancel</button>
                 <button type="button" class="btn btn--confirm float-right btn--half" @click="submit">Confirm</button>
               </div>
-              <div class="text-right"><a href="" class="textbutton">Can not you do Google Authentication?</a></div>
+              <div class="text-right modal__textbutton"><a href="" class="textbutton">Can not you do Google Authentication?</a></div>
           </div>
 
       </div>

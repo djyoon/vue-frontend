@@ -6,6 +6,9 @@ export default {
 
             visibleMarketDept: false,
             visibleTypeDept: false,
+            isMobile: false,
+            isTablet: false,
+            visibleSideMenu: false,
 
             orders: [],
 
@@ -43,9 +46,15 @@ export default {
       }
     },
     mounted: function() {
+        this.handleResize()
+        window.addEventListener('resize', this.handleResize)
+
         this.marketDeptMenu = common.marketDeptMenu
         this.typeDeptMenu = common.typeDeptMenu
         this.requestOrderHistory()
+    },
+    beforeDestroy: function() {
+        window.removeEventListener('resize', this.handleResize)
     },
     methods: {
 
@@ -130,8 +139,8 @@ export default {
 
                             row.date = row.time
                             row.market = row.market_id
-                            row.buycoin = row.market_id.split('_')[0]
-                            row.sellcoin = row.market_id.split('_')[1]
+                            row.coin_id = row.market_id.split('_')[0]
+                            row.market_base = row.market_id.split('_')[1]
                             row.executed = row.trade_quantity
 
                             this.orders.push(row)
@@ -170,5 +179,12 @@ export default {
                 this.$store.commit('logout')
             }
         },
+        toggleSideMenu() {
+            this.visibleSideMenu = !this.visibleSideMenu;
+        },
+        handleResize() {
+            this.isMobile = window.innerWidth < 768
+            this.isTablet = window.innerWidth < 1025
+        }
     }
 }

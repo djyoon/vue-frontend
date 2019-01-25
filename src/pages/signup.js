@@ -41,6 +41,8 @@ export default {
       this.error_common = ""
       let hasError = false
 
+      this.email = this.email.trim()
+
       if(this.email.length <= 0) {
         this.error_email = this.$t('common.error.required')
         hasError = true

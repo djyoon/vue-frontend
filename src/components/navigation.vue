@@ -69,16 +69,16 @@
       <div class="mgnb" v-if="showMobileGnb">
           <ul class="mgnb__depth1">
               <li class="mgnb__depth1-li">
-                  <router-link class="mgnb__depth1-link" to="/exchange">Exchange</router-link>
+                  <button class="mgnb__depth1-link" @click="gotoPage('exchange')">Exchange</button>
               </li>
               <li class="mgnb__depth1-li">
-                  <router-link class="mgnb__depth1-link" to="#//">Service</router-link>
+                  <button class="mgnb__depth1-link">Service</button>
               </li>
               <li class="mgnb__depth1-li">
-                  <router-link class="mgnb__depth1-link" to="/order-open" v-if="isLogin">Orders</router-link>
+                  <button class="mgnb__depth1-link" @click="gotoPage('order-open')" v-if="isLogin">Orders</button>
               </li>
               <li class="mgnb__depth1-li">
-                  <router-link class="mgnb__depth1-link" to="/balances" v-if="isLogin">Balances</router-link>
+                  <button class="mgnb__depth1-link" @click="gotoPage('balances')" v-if="isLogin">Balances</button>
               </li>
               <li class="mgnb__depth1-li" v-if="isLogin">
                   <button class="mgnb__depth1-link mgnb__depth1-link--color-blue js-btn-depth i-am-a-popover-trigger" v-on:click="toggleAccountMenu">{{ loginEmail }}</button>
@@ -93,11 +93,11 @@
                     </ul>
                   </transition>
               </li>
-              <li class="mgnb__depth1-li" v-if="!isLogin" v-on:click="showMobileGnb = !showMobileGnb">
-                  <router-link class="mgnb__depth1-link" to="/login">Login</router-link>
+              <li class="mgnb__depth1-li" v-if="!isLogin">
+                  <button class="mgnb__depth1-link" @click="gotoPage('login')">Login</button>
               </li>
-              <li class="mgnb__depth1-li" v-if="!isLogin" v-on:click="showMobileGnb = !showMobileGnb">
-                  <router-link class="mgnb__depth1-link" to="/signup">Sign up</router-link>
+              <li class="mgnb__depth1-li" v-if="!isLogin">
+                  <button class="mgnb__depth1-link" @click="gotoPage('signup')">Sign up</button>
               </li>
               <li class="mgnb__depth1-li">
                   <a class="mgnb__depth1-link js-btn-depth i-am-a-popover-trigger" href="#//" v-on:click="toggleLanguageMenu">

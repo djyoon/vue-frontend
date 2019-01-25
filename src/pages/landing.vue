@@ -59,7 +59,7 @@
           <div class="market-tablebox">
               <div class="wrap">
                   <div class="market__tabbox clearfix">
-                      <button class=" float-left market__tab-btn" v-bind:class="{active: market_base == 'USD'}" v-on:click="changeMarket('USD')">
+                      <button class="float-left market__tab-btn" v-bind:class="{active: market_base == 'USD'}" v-on:click="changeMarket('USD')">
                          <div class="market__tab market__tab--usd">
                              <img src="../images/icon/usd.svg"/>
                              USD <span>Market</span>

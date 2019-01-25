@@ -9,6 +9,8 @@ export default {
 
         coin_id: '',
         isMobile: false,
+        isTablet: false,
+        visibleSideMenu: false,
         history: [],
 
         //Sort
@@ -84,6 +86,7 @@ export default {
                               coin_icon: this.isMobile ? coinImages.big[row.coin_id] : coinImages.normal[row.coin_id],
                               coin_id: row.coin_id,
                               address_to: row.address_to,
+                              address_to_short: row.address_to.length > 24 ? row.address_to.substring(0, 22) + ".." : row.address_to,
                               amount: row.amount,
                               status: row.status,
                               status_str: this.status_strings[row.status],
@@ -120,6 +123,10 @@ export default {
       },
       handleResize() {
           this.isMobile = window.innerWidth < 768
+          this.isTablet = window.innerWidth < 1025
+      },
+      toggleSideMenu() {
+          this.visibleSideMenu = !this.visibleSideMenu;
       },
       popupError(message, link, logout) {
           this.has_error = true

@@ -7,6 +7,9 @@ export default {
 
             visibleMarketDept: false,
             visibleTypeDept: false,
+            isMobile: false,
+            isTablet: false,
+            visibleSideMenu: false,
 
             orders: [],
 
@@ -30,13 +33,23 @@ export default {
             sortMarketName: 'ALL',
             sortTypeName: 'ALL',
             marketDeptMenu: [],
-            typeDeptMenu: []
+            typeDeptMenu: [],
+
+            // Alert
+            alerts: [],
+            alertCounter: 0
         }
     },
     mounted: function() {
+        this.handleResize()
+        window.addEventListener('resize', this.handleResize)
+
         this.marketDeptMenu = common.marketDeptMenu
         this.typeDeptMenu = common.typeDeptMenu
         this.requestOrderOpen()
+    },
+    beforeDestroy: function() {
+        window.removeEventListener('resize', this.handleResize)
     },
     filters : {
         changeSlash : function(value) {
@@ -128,10 +141,11 @@ export default {
                         result.data.rows.forEach((row) => {
                             row.date = row.time
                             row.market = row.market_id
-                            row.buycoin = row.market_id.split('_')[0]
-                            row.sellcoin = row.market_id.split('_')[1]
+                            row.coin_id = row.market_id.split('_')[0]
+                            row.market_base = row.market_id.split('_')[1]
                             row.unexecuted = new Decimal(row.quantity).minus(row.trade_quantity).toString()
                             row.exetotal = row.trade_amount
+                            row.canceled = false
 
                             this.orders.push(row)
                         })
@@ -169,5 +183,92 @@ export default {
                 this.$store.commit('logout')
             }
         },
-    },
+        handleResize() {
+            this.isMobile = window.innerWidth < 768
+            this.isTablet = window.innerWidth < 1025
+        },
+        toggleSideMenu() {
+            this.visibleSideMenu = !this.visibleSideMenu;
+        },
+        cancelOrder: function(order) {
+            order.canceled = true
+
+            var data = new FormData()
+            data.append('login_token', this.$store.state.loginToken)
+            data.append('market_id', order.market_id)
+            data.append('order_id', order.order_id)
+
+            this.$http.post(`${this.apiURI}trade_cancel`, data, {
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    }
+                })
+                .then((response) => {
+                    const result = response.data.result
+                    if (result.code == 1) {
+                        this.addAlert("success", this.$t("exchange.cancelOrder"), this.$t("exchange.cancelOrderRequest"))
+                    } else {
+                        switch (result.code) {
+                            case -1:
+                            case -97:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.loginFailed"))
+                                break
+                            case -2:
+                            case -3:
+                            case -4:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.invalidParam"))
+                                break
+                            case -5:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyCancel"))
+                                break
+                            case -6:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyRequest"))
+                                break
+                            case -7:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("exchange.error.alreadyComplete"))
+                                break
+                            case -98:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.blocked"))
+                                break
+                            case -99:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.system"))
+                                break
+                            default:
+                                this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.unknown"))
+                                break
+                        }
+                    }
+                })
+                .catch(() => {
+                  this.addAlert("error", this.$t("exchange.cancelOrder"), this.$t("common.error.unknown"))
+                })
+        },
+        addAlert: function(type, title, desc) {
+            // type: success, warning, error
+            const id = this.alertCounter++;
+            this.alerts.push({id: id, type: type, title: title, desc: desc, visible: true})
+            setTimeout(() => {
+                this.pushRemoveAlert(id)
+            }, 5000)
+        },
+        pushRemoveAlert: function(id) {
+            for(let i=0; i<this.alerts.length; i++) {
+                if(this.alerts[i].id == id) {
+                    this.alerts[i].visible = false
+                    setTimeout(() => {
+                        this.removeAlert(id)
+                    }, 400)
+                    break
+                }
+            }
+        },
+        removeAlert: function(id) {
+            for(let i=0; i<this.alerts.length; i++) {
+                if(this.alerts[i].id == id) {
+                    this.alerts.splice(i, 1)
+                    break
+                }
+            }
+        }
+    }
 }
