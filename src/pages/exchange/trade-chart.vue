@@ -25,9 +25,12 @@
             예시로 코드
             https://kr.tradingview.com/widget/advanced-chart/ -->
             <div class="tradingview-widget-container">
-                <div id="tradingview_f6188" style="height:100%;"></div>
+                <!-- <div id="tradingview_f6188" style="height:100%;"></div> -->
+                <TVChartContainer id="tv_chart_container" style="height:100%;" :symbol="market_id" />
                 <!--<div class="tradingview-widget-copyright">TradingView 제공 <a href="https://kr.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL 차트</span></a></div>-->
             </div>
         </div>
     </div>
 </template>
+
+<script src="./trade-chart.js"></script>

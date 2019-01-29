@@ -39,7 +39,8 @@
                     :market_id="market_id"
                     v-on:refreshMarketList="refreshMarketList"></trade-summary>
 
-                <trade-chart v-if="visibleTabChart"></trade-chart>
+                <trade-chart v-if="visibleTabChart"
+                    :market_id="market_id"></trade-chart>
 
                 <div class="market__bottom clearfix">
                     <market-order v-if="visibleTabTrade"

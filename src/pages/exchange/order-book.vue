@@ -43,20 +43,20 @@
                         v-for="(row, index) in sell" :key="row.price">
                         <span class="state__row-progress"></span>
                         <div class="float-left state__viewer-col text-left">SELL {{ sell.length - index }}</div>
-                        <div class="float-left state__viewer-col text-center">{{ row.price }}</div>
-                        <div class="float-left state__viewer-col state__viewer-col-color-w text-right">{{ row.quantity }}</div>
+                        <div class="float-left state__viewer-col text-right">{{ row.price }}</div>
+                        <div class="float-left state__viewer-col state__viewer-col-color-w text-right">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</div>
                     </div>
                 </div>
                 <div class="state__viewer-total" :class="{'state__viewer-total--buy': last.mode === 'buy', 'state__viewer-total--sell': last.mode === 'sell', 'state__viewer-total-top': mode != 1, 'state__viewer-total-bottom': mode != 2}">
-                    <span>{{ last.price }}</span> {{ last.quantity }} {{ coin_id }}
+                    <span>{{ last.price }}</span> {{ last.quantity | numberFormat(last.quantity.length > 14 ? '0a' : '0.0000') }} {{ coin_id }}
                 </div>
                 <div class="state__viewer-scrollbox state__viewer-buy" theme="light" display="vertical" v-if="mode == 0 || mode == 1" :class="{'state__viewer-scrollbox--long': mode == 1}">
                     <div class="state__viewer-body-row state__viewer-body-row--buy clearfix"
                         v-for="(row, index) in buy" :key="row.price">
                         <span class="state__row-progress"></span>
                         <div class="float-left state__viewer-col text-left">BUY {{ index + 1 }}</div>
-                        <div class="float-left state__viewer-col text-center">{{ row.price }}</div>
-                        <div class="float-left state__viewer-col state__viewer-col-color-w text-right">{{ row.quantity }}</div>
+                        <div class="float-left state__viewer-col text-right">{{ row.price }}</div>
+                        <div class="float-left state__viewer-col state__viewer-col-color-w text-right">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000')}}</div>
                     </div>
                 </div>
             </div>
