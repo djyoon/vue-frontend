@@ -192,7 +192,8 @@
 .btn-state__price-favorite.active{background:url(../images/main/favorites-select-12-px@3x.png) no-repeat left center;background-size:auto 12px;}
 .state__viewer{margin-top:8px;background:#0f1223;height:400px;}
 .state__viewer-title{height:50px;box-sizing:border-box;padding:0 1em;box-sizing:border-box;vertical-align:middle;}
-.state__viewer-header{border-bottom:1px solid #212337; border-top:1px solid #212337;}
+.state__viewer-header{border-top:1px solid #212337;}
+.state__viewer-header-bottom{border-bottom:1px solid #212337;}
 .state__trate-btn{width:24px;height:24px;border-radius:3px;border:1px solid #2a2d45;text-align:center;line-height:24px;box-sizing:border-box;margin:13px 0;margin-right:1.5em;}
 .state__trate-btn.active{border-color:#538fff;}
 .state__viewer-select button{line-height:50px;font-size:12px;padding-right:1.5em;}
@@ -216,8 +217,8 @@
 .state__viewer-col--order{width:14.222%;}
 .state__viewer-col--order a{color:#538fff;}
 .state__viewer-total{text-align:center;font-size:12px;color:#676c8c;}
-.state__viewer-total--buy span{color:#48a75a;background:url(../images/main/arrow-pointing-to-up@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
-.state__viewer-total--sell span{color:#dc4646;background:url(../images/main/arrow-pointing-to-down@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
+.state__viewer-total--buy {color:#48a75a;background:url(../images/main/arrow-pointing-to-up@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
+.state__viewer-total--sell {color:#dc4646;background:url(../images/main/arrow-pointing-to-down@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
 .state__viewer-total span{font-size:18px;display:inline-block;margin-right:.5em;vertical-align:middle;}
 .state__viewer-scrollbox{height:140px;overflow:hidden;border-left:0;border-right:0;}
 .state__viewer-scrollbox--long{height:270px;padding-top:8px;}

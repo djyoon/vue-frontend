@@ -206,17 +206,26 @@
             </div>
         </div>
 
-        <div v-if="visibleSuccess != visibleProcess">
+        <div v-if="visibleProcess">
+            <div class="blackbg"></div>
+            <div class="modal">
+                <div class="text-center">
+                    <div class="madal__iconbox"><img src="../../images/icon/loading_progress.gif" alt="" width="70" height="70"></div>
+                    <h2 class="modal__title">Please wait.</h2>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="visibleSuccess">
             <div class="blackbg"></div>
             <div class="modal">
                 <div class="text-center">
                     <div class="madal__iconbox"><img src="../../images/icon/check.png" alt=""></div>
-                    <h2 class="modal__title" v-if="visibleSuccess">Withdrawal successful.</h2>
-                    <h2 class="modal__title" v-if="visibleProcess">Please wait.</h2>
-                    <p class="modal__desc" v-if="visibleSuccess">
+                    <h2 class="modal__title">Your withdrawal request has been completed.</h2>
+                    <p class="modal__desc">
                         Please check your email. <br/>
                     </p>
-                    <div class="modal__btnbox" v-if="visibleSuccess">
+                    <div class="modal__btnbox">
                         <a class="btn btn--confirm btn--single" @click="hideSuccess">OK</a>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+import {Decimal} from 'decimal.js';
+
 let refreshTimer = null
 
 export default {
@@ -18,7 +20,8 @@ export default {
             showDepthMenu: false,
             depth: 8,
             coin_id: "ETH",
-            market_base: "BTC"
+            market_base: "BTC",
+            visibleLast: false
         }
     },
     props: [ 'market_id' ],
@@ -58,7 +61,27 @@ export default {
                         this.buyFull = result.data.buy
                         this.sellFull = result.data.sell
                         this.last = result.data.last
+
+                        let total = new Decimal(0)
+                        this.buyFull.forEach((row) => {
+                            total = total.plus(row.quantity)
+                        })
+
+                        this.buyFull.forEach((row) => {
+                            row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
+                        })
+
+                        total = new Decimal(0)
+                        this.sellFull.forEach((row) => {
+                            total = total.plus(row.quantity)
+                        })
+
+                        this.sellFull.forEach((row) => {
+                            row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
+                        })
+
                         this.resetOrderList()
+                        this.visibleLast = true
                     } else {
                         switch (result.code) {
                             case -1:
@@ -89,33 +112,44 @@ export default {
             this.resetOrderList()
         },
         resetOrderList() {
+            const empty = {rate: "0", price: "0", quantity: "0"}
             if(this.mode == 0) {
                 this.buy = [];
-                for(let i=0; i<this.buyFull.length; i++) {
-                    this.buy.push(this.buyFull[i])
-                    if(i >= 4) break;
+                for(let i=0; i<7; i++) {
+                    if(i < this.buyFull.length)
+                        this.buy.push(this.buyFull[i])
+                    else
+                        this.buy.push(empty)
                 }
 
                 this.sell = [];
-                for(let i=this.sellFull.length-5; i<this.sellFull.length; i++) {
+                for(let i=this.sellFull.length-7; i<this.sellFull.length; i++) {
                     if(i < 0)
-                        this.sell.push({price: "0", quantity: "0"})
+                        this.sell.push(empty)
                     else
                         this.sell.push(this.sellFull[i])
                 }
             }
             else if(this.mode == 1) {
                 this.buy = this.buyFull
+
+                while(this.buy.length < 14) {
+                    this.buy.push(empty)
+                }
+
+                if(this.buy.length > 14) {
+                    this.buy.splice(14, this.buy.length - 14)
+                }
             }
             else if(this.mode == 2) {
                 this.sell = this.sellFull
 
-                while(this.sell.length < 9) {
-                    this.sell.splice(0, 0, {price: "0.00000000", quantity: "0.00000000"})
+                while(this.sell.length < 14) {
+                    this.sell.splice(0, 0, empty)
                 }
 
-                if(this.sell.length > 9) {
-                    this.sell.splice(0, this.sell.length - 9)
+                if(this.sell.length > 14) {
+                    this.sell.splice(0, this.sell.length - 14)
                 }
             }
         }

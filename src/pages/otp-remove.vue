@@ -27,7 +27,7 @@
             <div class="blackbg"></div>
             <div class="modal">
                 <div class="text-center">
-                    <div class="madal__iconbox"><img src="../images/icon/check.png" alt=""></div>
+                    <div class="madal__iconbox"><img src="../images/icon/loading_progress.gif" alt="" width="70" height="70"></div>
                     <h2 class="modal__title">Please wait.</h2>
                 </div>
             </div>
