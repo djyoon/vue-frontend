@@ -28,7 +28,7 @@
                         <div class="openorder-table__body clearfix">
                             <div class="openorder-table__deposit--row clearfix" v-for="row in history" :key="row.index">
                                 <p class="col1 text-left">
-                                    {{ row.time | moment("MMM D, YYYY HH:MM") }}
+                                    {{ row.time | moment("MMM D, YYYY HH:mm") }}
                                 </p>
                                 <p class="col2 text-left logo">
                                     <img :src="row.coin_icon">

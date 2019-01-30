@@ -19,7 +19,7 @@
                 <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyOpen.length > 0">
                     <div class="scroll-me">
                         <div class="state__viewer-body-row clearfix" v-for="row in historyOpen" :key="row.index">
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:MM")}}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:mm")}}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order float-left text-left upper-case"
                                 :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy'}">{{ row.type }}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ coin_id }}/{{ market_base }}</h2>
@@ -53,7 +53,7 @@
                 <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyClose.length > 0">
                     <div class="scroll-me">
                         <div class="state__viewer-body-row clearfix" v-for="row in historyClose" :key="row.index">
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:MM")}}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:mm")}}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order float-left text-left upper-case"
                                 :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy'}">{{ row.type }}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ coin_id }}/{{ market_base }}</h2>

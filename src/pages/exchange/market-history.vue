@@ -12,7 +12,7 @@
             <div class="state__viewer-scrollbox state__viewer-scrollbox--long2" theme="light" display="vertical">
                 <div class="state__viewer-body-row clearfix" v-for="row in history" :key="row.index"
                     :class="{'state__viewer-body-row--sell': row.type === 'sell', 'state__viewer-body-row--buy': row.type === 'buy'}">
-                    <div class="float-left state__viewer-col state__viewer-col--color-white text-left">{{  row.time | moment(row.time > bef24h ? "HH:MM" : "MMM Do") }}</div>
+                    <div class="float-left state__viewer-col state__viewer-col--color-white text-left">{{  row.time | moment(row.time > bef24h ? "HH:mm" : "MMM Do") }}</div>
                     <div class="float-left state__viewer-col text-right">{{ row.price }}</div>
                     <div class="float-left state__viewer-col state__viewer-col-color-w text-right">{{ row.quantity | numberFormat("0,000.0000") }}</div>
                 </div>

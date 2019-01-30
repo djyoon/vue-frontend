@@ -82,8 +82,7 @@ export default {
 
       theme: 'Dark',
       loading_screen: { backgroundColor: '#1b1e2d' },
-      toolbar_bg: '#1b1e2d',
-      debug: true
+      toolbar_bg: '#1b1e2d'
     };
     const tvWidget = new widget(widgetOptions);
     this.tvWidget = tvWidget;
