@@ -61,7 +61,7 @@ export default {
     }
   },
   tvWidget: null,
-  mounted() {
+  mounted: function() {
     const widgetOptions = {
       symbol: this.symbol,
       // BEWARE: no trailing slash is expected in feed URL
@@ -101,9 +101,9 @@ export default {
       button[0].innerHTML = 'Check API';
     });
   },
-  destroyed() {
+  beforeDestroy: function() {
     if (this.tvWidget !== null) {
-      this.tvWidget.remove();
+      // this.tvWidget.remove();
       this.tvWidget = null;
     }
   }

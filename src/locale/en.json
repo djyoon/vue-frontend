@@ -30,7 +30,10 @@
       "incorrect" : "Incorrect password.",
       "errCount": "{number} times error.",
       "blockedAcc": "This account has been blocked from accessing.",
-      "exceed" : "You can not log in with more than the number of passwords entered."
+      "exceed" : "You can not log in with more than the number of passwords entered.",
+      "enterOtp": "Enter OTP number (6 numbers)",
+      "invalidOtp": "Invalid OTP number",
+      "dismatchOtp": "Does not match OTP number"
     }
   },
   "signUp": {

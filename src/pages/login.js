@@ -21,6 +21,9 @@ export default {
     }
   },
   methods: {
+    submitLoginOTP: function() {
+
+    },
     submitLogin: function() {
       this.error_email = "";
       this.error_password = "";
@@ -79,7 +82,16 @@ export default {
               break
             case -4: this.error_password = this.$t("login.error.exceed")
               break
-            case -5: this.error_password = 'This account has been blocked from accessing.'
+            case -5: this.error_password = this.$t("login.error.blockedAcc")
+              break
+            case -6:
+              localStorage.email = this.email
+              localStorage.password = this.password
+              this.$router.push('/login-otp')
+              break
+            case -7: this.error_common = this.$t("login.error.invalidOtp")
+              break
+            case -8: this.error_common = this.$t("login.error.dismatchOtp")
               break
             case -98: this.error_common = this.$t("common.error.blocked")
               break

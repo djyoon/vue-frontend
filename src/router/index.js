@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Landing from '../pages/landing.vue'
 import Exchange from '../pages/exchange/index.vue'
 import Login from '../pages/login.vue'
+import LoginOTP from '../pages/login-otp.vue'
 import Signup from '../pages/signup.vue'
 import EmailAuth from '../pages/emailauth.vue'
 import Account from '../pages/account.vue'
@@ -25,6 +26,7 @@ const router = new VueRouter({
         { path: '/', component: Landing },
         { path: '/exchange', component: Exchange },
         { path: '/login', component: Login },
+        { path: '/login-otp', component: LoginOTP },
         { path: '/signup', component: Signup },
         { path: '/emailauth', component: EmailAuth },
         { path: '/otp-create', component: OtpCreate },
