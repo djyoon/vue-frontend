@@ -18,99 +18,75 @@ export default {
         refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
     },
     watch: {
-
+        isLogin: function() {
+            this.requestHistoryOpen()
+        }
     },
     beforeDestroy: function () {
         if(refreshTimer)
             clearTimeout(refreshTimer)
     },
     methods: {
-        requestHistoryOpen() {
+        requestHistoryOpen: function() {
+            if(!this.isLogin) return
+
             this.coin_id = this.market_id.split('_')[0]
             this.market_base = this.market_id.split('_')[1]
 
-            if(!this.isLogin) return
-
-            const data = new FormData()
-            data.append('login_token', this.$store.state.loginToken)
-            data.append('market_id', this.market_id)
-            data.append('type', '*')
-            data.append('from', 0)
-            data.append('to', 9)
-
-            this.$http.post(`${this.apiURI}account_trade`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
+            this.$emit("requestToHost", "account_trade",
+                { "login_token": this.$store.state.loginToken, "market_id": this.market_id, "type": "*", "from": 0, "to": 9 }, this.resultHistoryOpen)
+        },
+        resultHistoryOpen(data) {
+            const result = data.result
+            if (result.code == 1) {
+                this.historyOpen = result.data.rows.map((row, index) => {
+                    row.index = index
+                    row.unexecuted = new Decimal(row.quantity).minus(row.trade_quantity).toFixed(8)
+                    return row
                 })
-                .then((response) => {
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        this.historyOpen = result.data.rows.map((row, index) => {
-                            row.index = index
-                            row.unexecuted = new Decimal(row.quantity).minus(row.trade_quantity).toFixed(8)
-                            return row
-                        })
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -97:
-                            case -98:
-                            case -99:
-                            default:
-                                // 오류 처리 안함
-                                break
-                        }
-                    }
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -97:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 안함
+                        break
+                }
+            }
 
-                    this.refresh++
-                    this.requestHistoryClose()
-                })
-                .catch(() => {
-                    // 오류 처리 안함
-                })
+            this.refresh++
+            this.requestHistoryClose()
         },
         requestHistoryClose() {
             if(!this.isLogin) return
 
-            var data = new FormData()
-            data.append('login_token', this.$store.state.loginToken)
-            data.append('market_id', this.market_id)
-            data.append('type', '*')
-            data.append('from', 0)
-            data.append('to', 9)
+            this.$emit("requestToHost", "account_order",
+                { "login_token": this.$store.state.loginToken, "market_id": this.market_id, "type": "*", "from": 0, "to": 9 }, this.resultHistoryClose)
+        },
+        resultHistoryClose(data) {
+            const result = data.result
+            if (result.code == 1) {
+                this.historyClose = result.data.rows.map((row, index) => {
+                    row.index = index
+                    row.canceled = false
+                    return row
+                })
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -97:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 안함
+                        break
+                }
+            }
 
-            this.$http.post(`${this.apiURI}account_order`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
-                })
-                .then((response) => {
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        this.historyClose = result.data.rows.map((row, index) => {
-                            row.index = index
-                            row.canceled = false
-                            return row
-                        })
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -97:
-                            case -98:
-                            case -99:
-                            default:
-                                // 오류 처리 안함
-                                break
-                        }
-                    }
-
-                    this.refresh++
-                    refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
-                })
-                .catch(() => {
-                    // 오류 처리 안함
-                })
+            this.refresh++
+            refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
         },
         changeTab: function(tab) {
             this.tab = tab

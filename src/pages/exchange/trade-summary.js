@@ -31,54 +31,44 @@ export default {
     },
     methods: {
         requestMarket: function() {
-            var data = new FormData()
-            data.append('market_id', this.market_id)
-
+            this.$emit("requestToHost", "market_info", { "market_id": this.market_id }, this.ressultMarket)
+        },
+        ressultMarket: function(data) {
             const landingFavor = this.$store.state.landingFavor
             const favors = landingFavor ? landingFavor.split(':') : []
 
-            this.$http.post(`${this.apiURI}market_info`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
-                })
-                .then((response) => {
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        const row = result.data
+            const result = data.result
+            if (result.code == 1) {
+                const row = result.data
 
-                        this.coin_id = row.coin_id
-                        this.market_base = row.market_base
-                        this.coin_name = row.coin_name
-                        this.price_change = row.price_change
-                        this.change_rate = row.change_rate
-                        this.volume_24h = row.volume_24h
-                        this.price_usd = row.price_usd
-                        this.price_last = row.price_last
-                        this.high_24h = row.high_24h
-                        this.low_24h = row.low_24h
+                this.coin_id = row.coin_id
+                this.market_base = row.market_base
+                this.coin_name = row.coin_name
+                this.price_change = row.price_change
+                this.change_rate = row.change_rate
+                this.volume_24h = row.volume_24h
+                this.price_usd = row.price_usd
+                this.price_last = row.price_last
+                this.high_24h = row.high_24h
+                this.low_24h = row.low_24h
 
-                        this.coin_icon = this.isMobile ? coinImages.big[row.coin_id] : coinImages.normal[row.coin_id]
+                this.coin_icon = this.isMobile ? coinImages.big[row.coin_id] : coinImages.normal[row.coin_id]
 
-                        if (favors.indexOf(this.market_id) >= 0) {
-                            this.favor = true
-                        }
+                if (favors.indexOf(this.market_id) >= 0) {
+                    this.favor = true
+                }
 
-                        this.isLoading = false;
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -98:
-                            case -99:
-                            default:
-                                // 오류 처리 없음
-                                break
-                        }
-                    }
-                })
-                .catch(() => {
-                    // 오류 처리 없음
-                })
+                this.isLoading = false;
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 없음
+                        break
+                }
+            }
         },
         refreshFavor: function() {
           let landingFavor = this.$store.state.landingFavor

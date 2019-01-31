@@ -90,56 +90,47 @@ export default {
             )
         },
         requestMarket(market) {
-            var data = new FormData()
-            data.append('market_base', market)
-
+            this.$emit("requestToHost", "market_list", { 'market_base': market }, this.resultMarket)
+        },
+        resultMarket(data) {
             const landingFavor = this.$store.state.landingFavor
             const favors = landingFavor ? landingFavor.split(':') : []
 
-            this.$http.post(`${this.apiURI}market_list`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
+            const result = data.result
+            const market = result.data.market_base
+
+            if (result.code == 1) {
+                this.market_list[market] = result.data.rows.map((row, index) => {
+                    row.price_last_usd = row.price_last * result.data.price_usd
+                    row.high_24h_usd = row.high_24h * result.data.price_usd
+                    row.low_24h_usd = row.low_24h * result.data.price_usd
+                    row.market_base = market
+                    row.favor = false
+                    row.index = index
+
+                    if (favors.indexOf(row.market_id) >= 0) {
+                        row.favor = true
+                        this.market_list.favor.push(row)
                     }
-                })
-                .then((response) => {
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        this.market_list[market] = result.data.rows.map((row, index) => {
-                            row.price_last_usd = row.price_last * result.data.price_usd
-                            row.high_24h_usd = row.high_24h * result.data.price_usd
-                            row.low_24h_usd = row.low_24h * result.data.price_usd
-                            row.market_base = market
-                            row.favor = false
-                            row.index = index
 
-                            if (favors.indexOf(row.market_id) >= 0) {
-                                row.favor = true
-                                this.market_list.favor.push(row)
-                            }
-
-                            if(row.market_id === this.market_id) {
-                                this.$emit("setTradeFee", row.trade_fee)
-                                this.$emit("setMinOrder", row.min_order)
-                            }
-
-                            return row
-                        })
-
-                        this.sortList(this.sortType, market)
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -98:
-                            case -99:
-                            default:
-                                // 오류 처리 안함
-                                break
-                        }
+                    if(row.market_id === this.market_id) {
+                        this.$emit("setTradeFee", row.trade_fee)
+                        this.$emit("setMinOrder", row.min_order)
                     }
+
+                    return row
                 })
-                .catch(() => {
-                    // 오류 처리 안함
-                })
+                this.sortList(this.sortType, market)
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 안함
+                        break
+                }
+            }
         },
         selectMarket(market) {
             this.$emit("selectMarket", market)

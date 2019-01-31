@@ -22,6 +22,7 @@
                     v-on:setTradeFee="setTradeFee"
                     v-on:setMinOrder="setMinOrder"
                     v-on:toggleFavor="toggleFavor"
+                    v-on:requestToHost="requestToHost"
                     :market_base="market_base"
                     :market_id="market_id"
                     :refresh="market_refresh"></market-list>
@@ -30,11 +31,13 @@
                     :isMobile="isMobile"
                     :market_id="market_id"
                     v-on:refreshMarketList="refreshMarketList"
+                    v-on:requestToHost="requestToHost"
                     :favorChanged="favorChanged"></trade-summary>
 
                 <order-book v-if="visibleTabTrade"
                     :market_id="market_id"
-                    v-on:selectPrice="selectPrice"></order-book>
+                    v-on:selectPrice="selectPrice"
+                    v-on:requestToHost="requestToHost"></order-book>
             </div>
 
             <div class="market" v-bind:class="{'float-left': !isMobile}">
@@ -42,6 +45,7 @@
                     :isMobile="isMobile"
                     :market_id="market_id"
                     v-on:refreshMarketList="refreshMarketList"
+                    v-on:requestToHost="requestToHost"
                     :favorChanged="favorChanged"></trade-summary>
 
                 <trade-chart v-if="visibleTabChart"
@@ -61,6 +65,7 @@
                         :selectedPrice="selectedPrice"></market-order>
 
                     <market-history v-if="visibleTabChart"
+                        v-on:requestToHost="requestToHost"
                         :market_id="market_id"></market-history>
                 </div>
             </div>
@@ -70,10 +75,12 @@
                     v-on:addAlert="addAlert"
                     :market_id="market_id"
                     :isLogin = "isLogin"
-                    :isMobile="isMobile"></my-order>
+                    :isMobile="isMobile"
+                    v-on:requestToHost="requestToHost"></my-order>
 
                 <market-history v-if="isTablet"
                     :isTablet="isTablet"
+                    v-on:requestToHost="requestToHost"
                     :market_id="market_id"></market-history>
             </div>
         </div>

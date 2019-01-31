@@ -31,22 +31,22 @@ export default {
     },
     computed: {
         buyTotal: function() {
-            return new Decimal(this.buy.price).times(this.buy.amount).toFixed(8)
+            return new Decimal(this.buy.price.length > 0 ? this.buy.price : 0).times(this.buy.amount.length > 0 ? this.buy.amount : 0).toFixed(8)
         },
         buyFee: function() {
-            return new Decimal(this.trade_fee).times("0.01").times(this.buy.amount).toFixed(8)
+            return new Decimal(this.trade_fee).times("0.01").times(this.buy.amount.length > 0 ? this.buy.amount : 0).toFixed(8)
         },
         buyPriceUsd: function() {
-            return new Decimal(this.buy.price).times(this.base.price_usd).toFixed(4)
+            return new Decimal(this.buy.price.length > 0 ? this.buy.price : 0).times(this.base.price_usd).toFixed(4)
         },
         sellTotal: function() {
-            return new Decimal(this.sell.price).times(this.sell.amount).toFixed(8)
+            return new Decimal(this.sell.price.length > 0 ? this.sell.price : 0).times(this.sell.amount.length > 0 ? this.sell.amount : 0).toFixed(8)
         },
         sellFee: function() {
-            return new Decimal(this.trade_fee).times("0.01").times(this.sell.amount).toFixed(8)
+            return new Decimal(this.trade_fee).times("0.01").times(this.sell.amount.length > 0 ? this.sell.amount : 0).toFixed(8)
         },
         sellPriceUsd: function() {
-            return new Decimal(this.sell.price).times(this.base.price_usd).toFixed(4)
+            return new Decimal(this.sell.price.length > 0 ? this.sell.price : 0).times(this.base.price_usd).toFixed(4)
         },
         realFeeRate: function() {
             return new Decimal(this.trade_fee).times(new Decimal(1).minus(new Decimal(this.fee_discount).times(0.01))).toString()

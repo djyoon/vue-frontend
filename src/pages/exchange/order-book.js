@@ -55,56 +55,45 @@ export default {
     },
     methods: {
         requestOrderBook() {
-            var data = new FormData()
-            data.append('market_id', this.market_id)
-            data.append('group', this.group)
+            this.$emit("requestToHost", "order_book", { 'market_id': this.market_id, 'group': this.group }, this.resultOrderBook)
+        },
+        resultOrderBook(data) {
+            const result = data.result
+            if (result.code == 1) {
+                this.buyFull = result.data.buy
+                this.sellFull = result.data.sell
+                this.last = result.data.last
 
-            this.$http.post(`${this.apiURI}order_book`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
+                let total = new Decimal(0)
+                this.buyFull.forEach((row) => {
+                    total = total.plus(row.quantity)
                 })
-                .then((response) => {
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        this.buyFull = result.data.buy
-                        this.sellFull = result.data.sell
-                        this.last = result.data.last
 
-                        let total = new Decimal(0)
-                        this.buyFull.forEach((row) => {
-                            total = total.plus(row.quantity)
-                        })
-
-                        this.buyFull.forEach((row) => {
-                            row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
-                        })
-
-                        total = new Decimal(0)
-                        this.sellFull.forEach((row) => {
-                            total = total.plus(row.quantity)
-                        })
-
-                        this.sellFull.forEach((row) => {
-                            row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
-                        })
-
-                        this.resetOrderList()
-                        this.visibleLast = true
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -98:
-                            case -99:
-                            default:
-                                // 오류 처리 없음
-                                break
-                        }
-                    }
+                this.buyFull.forEach((row) => {
+                    row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
                 })
-                .catch(() => {
-                    // 오류 처리 없음
+
+                total = new Decimal(0)
+                this.sellFull.forEach((row) => {
+                    total = total.plus(row.quantity)
                 })
+
+                this.sellFull.forEach((row) => {
+                    row.rate = new Decimal(row.quantity).dividedBy(total).times(100).toNumber()
+                })
+
+                this.resetOrderList()
+                this.visibleLast = true
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 없음
+                        break
+                }
+            }
         },
         closeGroupMenu() {
             this.showGroupMenu = false

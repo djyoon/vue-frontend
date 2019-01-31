@@ -39,7 +39,12 @@ export default {
 
             // Alert
             alerts: [],
-            alertCounter: 0
+            alertCounter: 0,
+
+            // WebSockte
+            websocketConnected: false,
+            messagePool: [],
+            lastCallback: null,
         }
     },
     components: {
@@ -60,9 +65,21 @@ export default {
         this.handleResize()
         window.addEventListener('resize', this.handleResize)
 
+        this.resultCallbacks = []
+        this.websocketConnected = false
+        this.$options.sockets.onmessage = (ev) => this.websocketMessage(ev)
+        this.$options.sockets.onopen = () => this.websocketOpen()
+        this.$options.sockets.onclose = () => this.websocketClose()
+        this.$connect()
+
         this.reloadAccountInfo()
     },
     beforeDestroy: function() {
+        this.$disconnect()
+        delete this.$options.sockets.onmessage
+        delete this.$options.sockets.onopen
+        delete this.$options.sockets.onclose
+
         window.removeEventListener('resize', this.handleResize)
     },
     computed: {
@@ -77,6 +94,35 @@ export default {
         },
     },
     methods: {
+        // 서버측에 전송할 메시지를 배열에 넣는다. (메시지의 순차처리를 위해)
+        requestToHost: function(command, params, callback) {
+            this.messagePool.push({command: command, params: params, callback: callback})
+        },
+        // 전송할 메시지를 하나씩 꺼내서 서버로 전송한다.
+        websocketPopSend: function() {
+            if(this.websocketConnected && this.messagePool.length > 0) {
+                const msg = this.messagePool.shift()
+                const sendMsg = { "command": msg.command, "params": msg.params }
+                this.lastCallback = msg.callback
+
+                this.$socket.send(JSON.stringify(sendMsg))
+            }
+
+            setTimeout(this.websocketPopSend, 100)
+        },
+        websocketMessage: function(ev) {
+            if(this.lastCallback) {
+                this.lastCallback(JSON.parse(ev.data))
+                this.lastCallback = null
+            }
+        },
+        websocketOpen: function() {
+            this.websocketConnected = true
+            this.websocketPopSend();
+        },
+        websocketClose: function() {
+            this.websocketConnected = false
+        },
         resetMarket: function() {
             let market_id = this.$route.query.market_id
             if(market_id && market_id.length > 0) {
@@ -103,95 +149,71 @@ export default {
             this.showGroupMenu = false
         },
         reloadAccountInfo: function() {
-            const data = new FormData()
-            data.append('login_token', this.$store.state.loginToken)
-
+            const params = { "login_token": this.$store.state.loginToken }
+            this.requestToHost("account_info", params, this.resultAccountInfo)
             this.api_calling = true
-
-            this.$http.post(`${this.apiURI}account_info`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
-                })
-                .then((response) => {
-                    this.api_calling = false
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        this.fee_discount = result.data.fee_discount
-                        this.reloadAccountBalance()
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -97:
-                            case -98:
-                                this.isLogin = false
-                                break
-                            case -99:
-                                this.popupError(this.$t('common.error.system'), '', false);
-                                break
-                            default:
-                                this.popupError(this.$t('common.error.unknown'), '', false);
-                                break
-                        }
-                    }
-                })
-                .catch(() => {
-                    this.isLogin = false
-                    this.api_calling = false
-                    this.popupError(this.$t('common.error.unknown'), '', false)
-                })
+        },
+        resultAccountInfo: function(data) {
+            this.api_calling = false
+            const result = data.result
+            if (result.code == 1) {
+                this.fee_discount = result.data.fee_discount
+                this.reloadAccountBalance()
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -97:
+                    case -98:
+                        this.isLogin = false
+                        break
+                    case -99:
+                        this.popupError(this.$t('common.error.system'), '', false);
+                        break
+                    default:
+                        this.popupError(this.$t('common.error.unknown'), '', false);
+                        break
+                }
+            }
         },
         reloadAccountBalance: function() {
-            const data = new FormData()
-            data.append('login_token', this.$store.state.loginToken)
-
+            const params = { "login_token": this.$store.state.loginToken }
+            this.requestToHost("account_balance", params, this.resultAccountBalance)
             this.api_calling = true
+        },
+        resultAccountBalance: function(data) {
+            this.api_calling = false
+            const result = data.result
+            if (result.code == 1) {
+                const coins = result.data.rows
+                this.myAssets = coins
 
-            this.$http.post(`${this.apiURI}account_balance`, data, {
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
+                let usdTotal = new Decimal(0)
+                let btcTotal = new Decimal(0)
+                coins.forEach((coin) => {
+                    const coinBalance = new Decimal(coin.balance)
+                    usdTotal = usdTotal.plus(coinBalance.times(coin.price_usd))
+                    btcTotal = btcTotal.plus(coinBalance.times(coin.price_btc))
                 })
-                .then((response) => {
-                    this.api_calling = false
-                    const result = response.data.result
-                    if (result.code == 1) {
-                        const coins = result.data.rows
-                        this.myAssets = coins
 
-                        let usdTotal = new Decimal(0)
-                        let btcTotal = new Decimal(0)
-                        coins.forEach((coin) => {
-                            const coinBalance = new Decimal(coin.balance)
-                            usdTotal = usdTotal.plus(coinBalance.times(coin.price_usd))
-                            btcTotal = btcTotal.plus(coinBalance.times(coin.price_btc))
-                        })
+                this.usdTotal = usdTotal.toFixed(8)
+                this.btcTotal = btcTotal.toFixed(8)
 
-                        this.usdTotal = usdTotal.toFixed(8)
-                        this.btcTotal = btcTotal.toFixed(8)
-
-                        this.isLogin = true
-                    } else {
-                        switch (result.code) {
-                            case -1:
-                            case -97:
-                            case -98:
-                                this.isLogin = false
-                                break
-                            case -99:
-                                this.popupError(this.$t('common.error.system'), '', false);
-                                break
-                            default:
-                                this.popupError(this.$t('common.error.unknown'), '', false);
-                                break
-                        }
-                    }
-                })
-                .catch(() => {
-                    this.isLogin = false
-                    this.api_calling = false
-                    this.popupError(this.$t('common.error.unknown'), '', false)
-                })
+                this.isLogin = true
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -97:
+                    case -98:
+                        this.isLogin = false
+                        break
+                    case -99:
+                        this.popupError(this.$t('common.error.system'), '', false);
+                        break
+                    default:
+                        this.popupError(this.$t('common.error.unknown'), '', false);
+                        break
+                }
+            }
         },
         popupError(message, link, logout) {
             this.has_error = true
