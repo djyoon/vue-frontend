@@ -13,11 +13,3 @@
 .ob-board .ob-row {height: 18px;margin: 2px 0;}
 .ob-board .ob-row .ob-row-cell{height:18px;line-height:18px;width:33.333%;font-size:12px;padding:0 16px;box-sizing:border-box;position:relative;z-index:10;font-weight:400;}
 .ob-board .ob-row .ob-row-white {color:#a6aac0;}
-
-/*
-.ob-board .ob-sell .ob-row-progress {background:#2d1a28;height: 18px;display: block;position: absolute;}
-.ob-board .ob-buy .ob-row-progress {background:#17282a;height: 18px;display: block;position: absolute;}
-
-.ob-board .ob-row {background-image: linear-gradient(to left, #2d1a28 50%, transparent 50%);}
-.ob-board .ob-row {background-image: linear-gradient(to left, #17282a 50%, transparent 50%);}
-*/

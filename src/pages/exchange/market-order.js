@@ -13,7 +13,7 @@ export default {
             tradeTab: 0
         }
     },
-    props: [ 'market_id', 'assets', 'trade_fee', 'isMobile', 'isTablet', 'min_order', 'fee_discount', "isLogin" ],
+    props: [ 'market_id', 'assets', 'trade_fee', 'isMobile', 'isTablet', 'min_order', 'fee_discount', "isLogin", "selectedPrice" ],
     mounted: function() {
         this.resetMarket()
     },
@@ -23,6 +23,10 @@ export default {
         },
         assets: function() {
             this.resetBalance()
+        },
+        selectedPrice: function() {
+            this.buy.price = this.selectedPrice
+            this.sell.price = this.selectedPrice
         }
     },
     computed: {

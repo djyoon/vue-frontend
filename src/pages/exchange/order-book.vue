@@ -18,16 +18,10 @@
             </button>
 
             <div class="state__viewer-select select--custom--box float-right">
-                <button class=" select--custom--view i-am-a-popover-trigger" v-on:click="toggleDepthMenu"><span>Group</span> {{depthNumber}}</button>
-                <ul class="select--custom i-am-a-popover close-me-by-clicking-outside-of-me" v-if="showDepthMenu" v-on-click-outside="closeDepthMenu">
-                    <li class="select__option"><button type="button" @click="selectDepth(8)" :class="{active: depth == 8}">0.00000001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(7)" :class="{active: depth == 7}">0.0000001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(6)" :class="{active: depth == 6}">0.000001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(5)" :class="{active: depth == 5}">0.00001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(4)" :class="{active: depth == 4}">0.0001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(3)" :class="{active: depth == 3}">0.001</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(2)" :class="{active: depth == 2}">0.01</button></li>
-                    <li class="select__option"><button type="button" @click="selectDepth(1)" :class="{active: depth == 1}">0.1</button></li>
+                <button class=" select--custom--view i-am-a-popover-trigger" v-on:click="toggleGroupMenu"><span>Group</span> {{ groupFormat }}</button>
+                <ul class="select--custom i-am-a-popover close-me-by-clicking-outside-of-me" v-if="showGroupMenu" v-on-click-outside="closeGroupMenu">
+                    <li class="select__option" v-for="(price, index) in priceGroup" :key="index"><button type="button"
+                      @click="selectGroup(index)" :class="{active: depth == index}">{{ price }}</button></li>
                 </ul>
             </div>
         </div>
@@ -41,10 +35,11 @@
                 <div class="ob-sell" v-if="mode == 0 || mode == 2" :class="{'ob-sell-long': mode == 2}">
                     <div class="ob-row"
                         v-for="(row, index) in sell" :key="index"
-                        :style="{'background-image': 'linear-gradient(to left, #2d1a28 ' + row.rate + '%, transparent 0%)'}">
+                        :style="{'background-image': 'linear-gradient(to left, #2d1a28 ' + row.rate + '%, transparent 0%)'}"
+                        @click="selectPrice(row)">
                         <span class="ob-row-progress"></span>
                         <div class="float-left ob-row-cell text-left">SELL {{ sell.length - index }}</div>
-                        <div class="float-left ob-row-cell text-right">{{ row.price == '0' ? '-' : row.price }}</div>
+                        <div class="float-left ob-row-cell text-right">{{ row.price | formatPrice(groupFormat) }}</div>
                         <div class="float-left ob-row-cell ob-row-white text-right">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</div>
                     </div>
                 </div>
@@ -55,10 +50,11 @@
                 <div class="ob-buy" v-if="mode == 0 || mode == 1" :class="{'ob-buy-long': mode == 1}">
                     <div class="ob-row"
                         v-for="(row, index) in buy" :key="index"
-                        :style="{'background-image': 'linear-gradient(to left, #17282a ' + row.rate + '%, transparent 0%)'}">
+                        :style="{'background-image': 'linear-gradient(to left, #17282a ' + row.rate + '%, transparent 0%)'}"
+                        @click="selectPrice(row)">
                         <span class="ob-row-progress"></span>
                         <div class="float-left ob-row-cell text-left">BUY {{ index + 1 }}</div>
-                        <div class="float-left ob-row-cell text-right">{{ row.price == '0' ? '-' : row.price }}</div>
+                        <div class="float-left ob-row-cell text-right">{{ row.price | formatPrice(groupFormat) }}</div>
                         <div class="float-left ob-row-cell ob-row-white text-right">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000')}}</div>
                     </div>
                 </div>

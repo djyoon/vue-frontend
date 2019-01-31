@@ -1,4 +1,5 @@
-import {Decimal} from 'decimal.js';
+import {Decimal} from 'decimal.js'
+import numeral from 'numeral'
 
 let refreshTimer = null
 
@@ -17,11 +18,12 @@ export default {
             },
             mode: 0,
             group: 0,
-            showDepthMenu: false,
-            depth: 8,
+            showGroupMenu: false,
             coin_id: "ETH",
             market_base: "BTC",
-            visibleLast: false
+            visibleLast: false,
+            priceGroup: ["0.00000001", "0.0000001", "0.000001", "0.000001", "0.00001", "0.0001", "0.001", "0.1"],
+            groupFormat: "0.00000001"
         }
     },
     props: [ 'market_id' ],
@@ -38,17 +40,24 @@ export default {
     watch: {
         market_id: function() {
             this.coin_id = this.market_id.split('_')[0]
-        }
+        },
+        group: function() {
+            this.groupFormat = this.priceGroup[this.group]
+        },
     },
-    computed: {
-        depthNumber: function() {
-            return Math.pow(10, -this.depth).toFixed(this.depth)
-        }
+    filters : {
+      formatPrice : function(value, format = "0.0") {
+          if(value == 0)
+              return '-'
+          else
+              return numeral(value).format(format)
+      }
     },
     methods: {
         requestOrderBook() {
             var data = new FormData()
             data.append('market_id', this.market_id)
+            data.append('group', this.group)
 
             this.$http.post(`${this.apiURI}order_book`, data, {
                     headers: {
@@ -97,15 +106,15 @@ export default {
                     // 오류 처리 없음
                 })
         },
-        closeDepthMenu() {
-            this.showDepthMenu = false
+        closeGroupMenu() {
+            this.showGroupMenu = false
         },
-        toggleDepthMenu() {
-            this.showDepthMenu = !this.showDepthMenu
+        toggleGroupMenu() {
+            this.showGroupMenu = !this.showGroupMenu
         },
-        selectDepth(depth) {
-            this.depth = depth
-            this.closeDepthMenu()
+        selectGroup(group) {
+            this.group = group
+            this.closeGroupMenu()
         },
         selectMode(mode) {
             this.mode = mode
@@ -152,6 +161,9 @@ export default {
                     this.sell.splice(0, this.sell.length - 14)
                 }
             }
+        },
+        selectPrice(row) {
+          this.$emit("selectPrice", row.price)
         }
     }
 }

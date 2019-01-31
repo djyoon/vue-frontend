@@ -30,7 +30,9 @@
                     :market_id="market_id"
                     v-on:refreshMarketList="refreshMarketList"></trade-summary>
 
-                <order-book v-if="visibleTabTrade" :market_id="market_id"></order-book>
+                <order-book v-if="visibleTabTrade"
+                    :market_id="market_id"
+                    v-on:selectPrice="selectPrice"></order-book>
             </div>
 
             <div class="market" v-bind:class="{'float-left': !isMobile}">
@@ -52,7 +54,8 @@
                         :fee_discount="fee_discount"
                         :isLogin = "isLogin"
                         :isMobile="isMobile"
-                        :isTablet="isTablet"></market-order>
+                        :isTablet="isTablet"
+                        :selectedPrice="selectedPrice"></market-order>
 
                     <market-history v-if="visibleTabChart"
                         :market_id="market_id"></market-history>

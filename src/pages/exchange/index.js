@@ -18,7 +18,7 @@ export default {
             isMobile: false,
             isTablet: false,
             isLogin: false,
-            showDepthMenu: false,
+            showGroupMenu: false,
             myAssets: [],
             usdTotal: "0",
             btcTotal: "0",
@@ -29,6 +29,7 @@ export default {
             fee_discount: 0,
             trade_fee: 0.1,
             min_order: 1,
+            selectedPrice: 0,
 
             // Error
             has_error: false,
@@ -95,10 +96,10 @@ export default {
             this.currentMobileTab = tab
         },
         toggleDepthMenu: function() {
-            this.showDepthMenu = !this.showDepthMenu
+            this.showGroupMenu = !this.showGroupMenu
         },
         closeDepthMenu: function() {
-            this.showDepthMenu = false
+            this.showGroupMenu = false
         },
         reloadAccountInfo: function() {
             const data = new FormData()
@@ -249,6 +250,9 @@ export default {
                     break
                 }
             }
+        },
+        selectPrice(price) {
+            this.selectedPrice = price
         }
     }
 }
