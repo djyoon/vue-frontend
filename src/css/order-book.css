@@ -6,7 +6,7 @@
 .ob-last-border-bottom {border-bottom:1px solid #212337;}
 .ob-last .ob-last-price {font-size:18px;display:inline-block;margin-right:.5em;vertical-align:middle;}
 .ob-last .ob-last-price-buy {color:#48a75a;background:url(../images/main/arrow-pointing-to-up@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
-.ob-last .ob-last-price-sell {color:#dc4646;background:url(../images/main/arrow-pointing-to-up@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
+.ob-last .ob-last-price-sell {color:#dc4646;background:url(../images/main/arrow-pointing-to-down@3x.png) no-repeat left center;background-size:auto 80%;line-height:1em;padding-left:20px;}
 
 .ob-board .ob-sell {color:#dc4646;}
 .ob-board .ob-buy {color:#48a75a;}

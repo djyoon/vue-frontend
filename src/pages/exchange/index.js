@@ -43,8 +43,8 @@ export default {
 
             // WebSockte
             websocketConnected: false,
-            messagePool: [],
-            lastCallback: null,
+            messagePool: {},
+            max_request_id: 0
         }
     },
     components: {
@@ -94,34 +94,43 @@ export default {
         },
     },
     methods: {
-        // 서버측에 전송할 메시지를 배열에 넣는다. (메시지의 순차처리를 위해)
+        // 서버측에 전송할 메시지를 배열에 넣는다.
         requestToHost: function(command, params, callback) {
-            this.messagePool.push({command: command, params: params, callback: callback})
+            this.max_request_id++
+            this.messagePool[this.max_request_id] = {command: command, params: params, callback: callback, sent: false}
+
+            this.websocketPopSend()
         },
-        // 전송할 메시지를 하나씩 꺼내서 서버로 전송한다.
+        // 전송할 메시지를 꺼내서 서버로 전송한다.
         websocketPopSend: function() {
-            if(this.websocketConnected && this.messagePool.length > 0) {
-                const msg = this.messagePool.shift()
-                const sendMsg = { "command": msg.command, "params": msg.params }
-                this.lastCallback = msg.callback
+            const request_ids = Object.keys(this.messagePool)
 
-                this.$socket.send(JSON.stringify(sendMsg))
+            if(this.websocketConnected && request_ids.length > 0) {
+                request_ids.forEach((request_id) => {
+                    const msg = this.messagePool[request_id]
+                    if(!msg.sent) {
+                        const sendMsg = { "command": msg.command, "params": msg.params, "request_id": request_id }
+                        this.$socket.send(JSON.stringify(sendMsg))
+                        msg.sent = true
+                    }
+                })
             }
-
-            setTimeout(this.websocketPopSend, 100)
         },
         websocketMessage: function(ev) {
-            if(this.lastCallback) {
-                this.lastCallback(JSON.parse(ev.data))
-                this.lastCallback = null
+            const data = JSON.parse(ev.data)
+            const request_id = data.result.request_id
+            if(request_id in this.messagePool) {
+                this.messagePool[request_id].callback(data)
+                delete this.messagePool[request_id]
             }
         },
         websocketOpen: function() {
             this.websocketConnected = true
-            this.websocketPopSend();
+            this.websocketPopSend()
         },
         websocketClose: function() {
             this.websocketConnected = false
+            setTimeout(() => this.$connect(), 1000)
         },
         resetMarket: function() {
             let market_id = this.$route.query.market_id
