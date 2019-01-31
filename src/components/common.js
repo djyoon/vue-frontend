@@ -11,6 +11,11 @@ const isEmpty = function(value) {
     }
 }
 
+const isNumeric = function (obj) {
+    obj = typeof(obj) === "string" ? obj.replace(/,/g, "") : obj;
+    return !isNaN(parseFloat(obj)) && isFinite(obj) && Object.prototype.toString.call(obj).toLowerCase() !== "[object array]";
+}
+
 const marketDeptMenu = [
     {key:'*', name: 'ALL'},
     {key:'ETH_BTC', name: 'ETH_BTC'},
@@ -30,5 +35,6 @@ const typeDeptMenu = [
 export default {
     isEmpty,
     marketDeptMenu,
-    typeDeptMenu
+    typeDeptMenu,
+    isNumeric    
 }

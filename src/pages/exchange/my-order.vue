@@ -19,14 +19,21 @@
                 <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyOpen.length > 0">
                     <div class="scroll-me">
                         <div class="state__viewer-body-row clearfix" v-for="row in historyOpen" :key="row.index">
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:mm")}}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order float-left text-left upper-case"
-                                :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy'}">{{ row.type }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ coin_id }}/{{ market_base }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.price }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.unexecuted | numberFormat(row.unexecuted.length > 14 ? '0a' : '0.0000') }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left"><span class="mobile-unit">Date</span>{{ row.time | moment(isTablet ? "MMM D, HH:mm" : "MMM D YYYY, HH:mm")}}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left"
+                                :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy', 'text-right': isTablet}">
+                                <span class="mobile-unit">Type</span>
+                                <span class="upper-case">{{ row.type }}</span></h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left" :class="{'text-right': isTablet}">
+                                <span class="mobile-unit">Pairs</span>{{ coin_id }}/{{ market_base }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left" :class="{'text-right': !isTablet}">
+                                <span class="mobile-unit">Price({{ market_base }})</span>{{ row.price }}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order text-right float-left">
+                                <span class="mobile-unit">Amount({{ coin_id }})</span>{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">
+                                <span class="mobile-unit">Unexecuted({{ coin_id }})</span>{{ row.unexecuted | numberFormat(row.unexecuted.length > 14 ? '0a' : '0.0000') }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-right float-right">
+                                <span class="mobile-unit">Action</span>
                                 <button class="textbutton" @click="cancelOrder(row)" :disabled="row.canceled"
                                     :class="{disabled: row.canceled}">Cancel</button>
                             </h2>
@@ -53,14 +60,21 @@
                 <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyClose.length > 0">
                     <div class="scroll-me">
                         <div class="state__viewer-body-row clearfix" v-for="row in historyClose" :key="row.index">
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ row.time | moment("MMM D, YYYY HH:mm")}}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order float-left text-left upper-case"
-                                :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy'}">{{ row.type }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">{{ coin_id }}/{{ market_base }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.price }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.amount | numberFormat(row.amount.length > 14 ? '0a' : '0.0000') }}</h2>
-                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">{{ row.price }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-left float-left">
+                                <span class="mobile-unit">Date</span>{{ row.time | moment(isTablet ? "MMM D, HH:mm" : "MMM D YYYY, HH:mm")}}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left"
+                                :class="{'color-red': row.type === 'sell', 'color-green': row.type === 'buy', 'text-right': isTablet}">
+                                <span class="mobile-unit">Type</span><span class="upper-case">{{ row.type }}</span></h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left" :class="{'text-right': isTablet}">
+                                <span class="mobile-unit">Price({{ market_base }})</span>{{ coin_id }}/{{ market_base }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order float-left" :class="{'text-right': !isTablet}">
+                                <span class="mobile-unit">Price({{ market_base }})</span>{{ row.price }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">
+                                <span class="mobile-unit">Amount({{ coin_id }})</span>{{ row.quantity | numberFormat(row.quantity.length > 14 ? '0a' : '0.0000') }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-right float-left">
+                                <span class="mobile-unit">Total({{ market_base }})</span>{{ row.amount | numberFormat(row.amount.length > 14 ? '0a' : '0.0000') }}</h2>
+                            <h2 class="state__viewer-col state__viewer-col--order text-right float-right">
+                                <span class="mobile-unit">Average Price ({{ market_base }})</span>{{ row.price }}</h2>
                         </div>
                     </div>
                 </vue-nice-scrollbar>

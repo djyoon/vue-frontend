@@ -13,7 +13,7 @@
                           </div>
                       </div>
 
-                      <div class="form__group form__group--mb2">
+                      <div class="form__group">
                           <label for="password" class="form__title" >Password</label>
                           <div class="form__box">
                               <input type="password" id="password" class="form__input" v-bind:class="{ wrong: error_password.length > 0 }" v-model="password" maxlength="16"

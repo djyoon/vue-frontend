@@ -19,11 +19,13 @@ export default {
                 'price': -1,
                 'change': -1,
                 'volume': -1
-            }
+            },
+            cur_market_base: 'USD'
         }
     },
     props: [ 'market_base', 'refresh', 'market_id' ],
     mounted: function() {
+        this.cur_market_base = this.market_base
         this.requestMarket('USD')
         this.requestMarket('BTC')
         this.requestMarket('ETH')
@@ -38,11 +40,11 @@ export default {
     },
     methods: {
         changeMarket(market) {
-            this.market_base = market
+            this.cur_market_base = market
             this.sortList(this.sortType, market)
         },
         toggleFavor(index) {
-            const row = this.market_list[this.market_base][index]
+            const row = this.market_list[this.cur_market_base][index]
 
             row.favor = !row.favor
 
@@ -63,7 +65,7 @@ export default {
         setSortOrder(type) {
             this.sortType = type
             this.sortOrder[type] = this.sortOrder[type] * -1
-            this.sortList(type, this.market_base)
+            this.sortList(type, this.cur_market_base)
         },
         sortList(type, market) {
             this.market_list[market] = this.market_list[market].sort(

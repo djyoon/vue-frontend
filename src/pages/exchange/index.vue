@@ -76,6 +76,7 @@
                     :market_id="market_id"
                     :isLogin = "isLogin"
                     :isMobile="isMobile"
+                    :isTablet="isTablet"
                     v-on:requestToHost="requestToHost"></my-order>
 
                 <market-history v-if="isTablet"

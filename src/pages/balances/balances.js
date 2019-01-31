@@ -3,7 +3,6 @@ import coinImages from "../../components/coin-icons.js"
 import common from "../../components/common.js"
 import OtpAuth from '../otp-auth.vue'
 
-
 export default {
     data: function () {
         return {
@@ -36,7 +35,7 @@ export default {
             to_address : '',
             receive_amount : '',
             min_withdraw : 0,
-            withdrawal_amount : 0,
+            withdrawal_amount : '',
             withdraw_fee : 0,
             onetime_limit : 0,
             price_usd : 0,
@@ -80,29 +79,13 @@ export default {
     },
     watch: {
         to_address : function(){
-            let value = this.to_address
-            if(!common.isEmpty(value)){
-                if(this.validationCheck(this.to_address, this.coin_id)){
-                    this.error_address = ''
-                } else {
-                    this.error_address = this.$t('wallet.error.invalidAddress')
-                }
-            }
+            this.error_address = ''
         },
         withdrawal_amount : function() {
-            let amount = new Decimal(this.withdrawal_amount).times(this.price_usd)
-            if(!common.isEmpty(amount)){
-                if(amount.comparedTo(this.min_withdraw.times(this.price_usd)) < 0) {
-                    this.error_withdraw = this.$t('wallet.error.checkMinWithdraw')
-                } else if(this.balance.comparedTo(this.withdrawal_amount) < 0) {
-                    this.error_withdraw = this.$t('wallet.error.noavailable')
-                } else if(amount.comparedTo(this.withdraw_max_crypto) > 0) {
-                    this.error_withdraw = this.$t('wallet.error.onetimeMax')
-                } else {
-                    this.error_withdraw = ''
-                    this.receive_amount = Decimal.sub(this.withdrawal_amount, this.withdraw_fee)
-                }
-            }
+            this.error_withdraw = ''
+
+            const with_amount = common.isNumeric(this.withdrawal_amount) ? this.withdrawal_amount : 0
+            this.receive_amount = new Decimal(with_amount).sub(this.withdraw_fee)
         },
         checkHideZero: function() {
             this.requestBalance()
@@ -144,7 +127,7 @@ export default {
         showWithdraw: function (coin_id, limit, fee, usd, balance) {
 
             this.to_address = ''
-            this.withdrawal_amount = 0
+            this.withdrawal_amount = ''
             this.error_address = ''
             this.error_withdraw = ''
             this.receive_amount = 0
@@ -230,30 +213,50 @@ export default {
 
         },
         otpAuthCheck : function() {
+            if(!this.validateWidthdraw()) return;
 
             this.memLevel = this.$store.state.memLevel
-
-            if(!common.isEmpty(this.to_address)
-                && !common.isEmpty(this.withdrawal_amount)
-                && this.error_address.length <= 0
-                && this.error_withdraw.length <= 0){
-                if(this.memLevel >= 2) {
-                    this.visibleWithdraw = false
-                    this.visibleOtpAuth = true
-                } else {
-                    this.requestWithdraw()
-                }
+            if(this.memLevel >= 2) {
+                this.visibleWithdraw = false
+                this.visibleOtpAuth = true
+            }
+            else {
+                this.requestWithdraw()
             }
         },
-        requestWithdraw : function () {
-            if(common.isEmpty(this.to_address)
-                || common.isEmpty(this.withdrawal_amount)
-                || this.error_address.length > 0
-                || this.error_withdraw.length > 0){
-                this.visibleWithdraw = true
-                return
+        validateWidthdraw: function() {
+            if(!this.validationAddress(this.to_address, this.coin_id)) {
+                this.error_address = this.$t('wallet.error.invalidAddress')
+                return false
             }
 
+            const with_amount = common.isNumeric(this.withdrawal_amount) ? this.withdrawal_amount : 0
+            const amount = new Decimal(with_amount).times(this.price_usd)
+            if(amount.comparedTo(this.min_withdraw.times(this.price_usd)) < 0) {
+                this.error_withdraw = this.$t('wallet.error.checkMinWithdraw')
+                return false
+            } else if(this.balance.comparedTo(this.withdrawal_amount) < 0) {
+                this.error_withdraw = this.$t('wallet.error.noavailable')
+                return false
+            } else if(amount.comparedTo(this.withdraw_max_crypto) > 0) {
+                this.error_withdraw = this.$t('wallet.error.onetimeMax')
+                return false
+            }
+
+            this.error_withdraw = ''
+            this.receive_amount = new Decimal(with_amount).sub(this.withdraw_fee)
+
+            return true
+        },
+        hideAllPopup: function() {
+            this.visibleSuccess = false
+            this.visibleProcess = false
+            this.visibleWithdraw = false
+            this.visibleOtpAuth = false
+            this.visibleAddress = false
+            this.visibleDeposit = false
+        },
+        requestWithdraw: function() {
             var data = new FormData()
 
             data.append('login_token', this.$store.state.loginToken)
@@ -272,14 +275,12 @@ export default {
                     this.api_calling = false
                     const result = response.data.result
 
+                    this.hideAllPopup()
+
                     if(result.code == 1) {
                         this.visibleSuccess = true
-                        this.visibleProcess = false
-                        this.visibleWithdraw = false
                     }
                     else {
-                        this.visibleProcess = false
-                        this.visibleSuccess = false
                         switch(result.code) {
                             case -1:
                                 this.popupError(this.$t('account.error.loginFailed'), '/login', true)
@@ -422,11 +423,11 @@ export default {
             this.sortList(type)
         },
         enterOtp: function(otp_number) {
-            if(!common.isEmpty(otp_number)){
-                this.otp_number = otp_number
-                this.visibleOtpAuth = false
-                this.requestWithdraw()
-            }
+            if(!this.validateWidthdraw()) return;
+
+            this.otp_number = otp_number
+            this.visibleOtpAuth = false
+            this.requestWithdraw()
         },
         hideOtp: function() {
             this.visibleOtpAuth = false
@@ -447,7 +448,9 @@ export default {
                 }
             )
         },
-        validationCheck(address, coinid){
+        validationAddress(address, coinid){
+            if(address.length <= 0) return false;
+
             let reg = ''
             if( ( coinid == "ETH" || coinid == "CFX" )){
                 reg = /^0x[0-9a-f]/i

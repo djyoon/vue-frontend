@@ -51,7 +51,7 @@
                     <h2 class="modal__title">Password change successful</h2>
                     <p class="modal__desc">
                         Your password has been changed.<br/>
-                        Please log in again.
+                        Please login again.
                     </p>
                     <div class="modal__btnbox">
                         <a class="btn btn--confirm btn--single" @click="logout">Confirm</a>

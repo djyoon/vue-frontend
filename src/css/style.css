@@ -363,6 +363,7 @@
 .state__viewer__body--order{display:none;}
 .state__viewer__body--order.state__order-view1{display:block;}
 .state__viewer__body--order .state__viewer-body-row:nth-child(odd){background:rgba(255, 255, 255, 0.03)}
+.state__viewer-col--order .mobile-unit {display: none;}
 
 .state__nodata {padding:9.6em 0;text-align:center;}
 .state__nodata img{height:3.5em;}
@@ -386,12 +387,14 @@
     .state__viewer-bodybox{height:359px;}
 
     .state__viewer-body-row{margin-bottom:2px;}
+    .state__viewer-col--order .mobile-unit {font-size:10px;color:#676c8c;display:block;}
+    .state__viewer-col--order {line-height: 14px; margin-bottom: .5em;}
 }
 @media screen and (max-width:767px){
     .market__tradehistory--tablet{display:none !important}
     .market__tradehistory{display:block;width:100%;margin-top:.5em;}
     .order{width:100%;}
-    .state__viewer-col--order{width:33.333%;}
+    .state__viewer-col--order{width:33.333%;white-space: nowrap;}
     .order .state__viewer-body-row{padding:.5em 0;}
 
     /*
@@ -786,7 +789,7 @@
     .filter.half:first-child{margin-right:3%;}
     .openorder-table{display:block;}
     .openorder-table__body{display:block;}
-    .openorder-table__row{display:block;padding:16px 8px;height: 44px;}
+    .openorder-table__row{display:block;padding:16px 8px;height: 72px;}
     .openorder-table__row p{font-size:12px;display:block;float:left;height:auto;padding:.5em .5em;box-sizing:border-box;text-align:left !important;padding:0;}
 
     .openorder-table__row p:nth-child(3n+1){width:45%;}

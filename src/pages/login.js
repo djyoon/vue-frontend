@@ -78,7 +78,7 @@ export default {
             case -2: this.error_password = this.$t("login.error.incorrect")
               break
             case -3:
-              this.error_password = this.$t("login.error.incorrect") + (tryCount > 1 ? ' ' + tryCount + this.$t("login.error.errCount") : '')
+              this.error_password = this.$t("login.error.incorrect") + (tryCount > 1 ? ' ' + this.$t("login.error.errCount").replace("{number}", tryCount) : '')
               break
             case -4: this.error_password = this.$t("login.error.exceed")
               break

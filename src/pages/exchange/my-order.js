@@ -13,7 +13,7 @@ export default {
             refresh: 0
         }
     },
-    props: [ 'market_id', "isMobile", "isLogin" ],
+    props: [ 'market_id', "isMobile", "isTablet", "isLogin" ],
     mounted: function() {
         refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
     },

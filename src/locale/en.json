@@ -12,7 +12,8 @@
       "unknown": "Unknown error. Please contact the site administrator.",
       "required" : "This field is required.",
       "invalidEmail" : "Invalid email address.",
-      "loginFailed": "You are not login. Please login again."
+      "loginFailed": "You are not login. Please login again.",
+      "invalidPwd": "For account security, your password must contain 8-16 characters of a combination of letters, numbers, and special characters."
     }
   },
   "emailAuth": {

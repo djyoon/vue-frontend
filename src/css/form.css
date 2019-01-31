@@ -192,7 +192,7 @@ select[multiple]
 ::placeholder{color:#676c8c;font-size:12px;}
 
 /* 버튼 */
-.textbutton{color:#538fff;font-size:14px;}
+.textbutton{color:#538fff;font-size:14px;cursor:pointer;}
 .textbutton.center{color:#538fff;font-size:14px;margin: 0 auto;}
 .textbutton--small{font-size:12px;}
 .textbutton:hover{text-decoration:underline;text-decoration-color:#538fff;}
