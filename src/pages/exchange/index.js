@@ -30,6 +30,7 @@ export default {
             trade_fee: 0.1,
             min_order: 1,
             selectedPrice: 0,
+            favorChanged: 0,
 
             // Error
             has_error: false,
@@ -253,6 +254,9 @@ export default {
         },
         selectPrice(price) {
             this.selectedPrice = price
+        },
+        toggleFavor() {
+            this.favorChanged++;
         }
     }
 }

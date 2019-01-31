@@ -58,6 +58,7 @@ export default {
             })
 
             this.$store.commit('resetLandingFavor', items.join(':'))
+            this.$emit('toggleFavor')
         },
         setSortOrder(type) {
             this.sortType = type

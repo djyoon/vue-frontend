@@ -21,6 +21,7 @@
                     v-on:selectMarket="selectMarket"
                     v-on:setTradeFee="setTradeFee"
                     v-on:setMinOrder="setMinOrder"
+                    v-on:toggleFavor="toggleFavor"
                     :market_base="market_base"
                     :market_id="market_id"
                     :refresh="market_refresh"></market-list>
@@ -28,7 +29,8 @@
                 <trade-summary v-if="isMobile && visibleTabTrade"
                     :isMobile="isMobile"
                     :market_id="market_id"
-                    v-on:refreshMarketList="refreshMarketList"></trade-summary>
+                    v-on:refreshMarketList="refreshMarketList"
+                    :favorChanged="favorChanged"></trade-summary>
 
                 <order-book v-if="visibleTabTrade"
                     :market_id="market_id"
@@ -39,7 +41,8 @@
                 <trade-summary v-if="!isMobile"
                     :isMobile="isMobile"
                     :market_id="market_id"
-                    v-on:refreshMarketList="refreshMarketList"></trade-summary>
+                    v-on:refreshMarketList="refreshMarketList"
+                    :favorChanged="favorChanged"></trade-summary>
 
                 <trade-chart v-if="visibleTabChart"
                     :market_id="market_id"></trade-chart>

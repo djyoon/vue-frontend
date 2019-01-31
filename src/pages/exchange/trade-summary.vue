@@ -5,7 +5,7 @@
             <p>{{ coin_id }}/{{ market_base }}</p><span>{{ coin_name }}</span>
         </div>
         <div class="market__surmary-price market__surmary-lineheight float-left" v-if="!isLoading">
-            <p>{{ price_last | numberFormat('0,000.00000000') }} <em class="per">{{ change_rate > 0 ? '+' : '' }}{{ change_rate }}%</em></p>
+            <p>{{ price_last | numberFormat('0,000.0000') }} <em class="per">{{ change_rate > 0 ? '+' : '' }}{{ change_rate }}%</em></p>
             <span>≈ {{ price_usd | numberFormat('0,000.0000') }} USD</span>
         </div>
         <ul class="market__state float-left" v-if="!isMobile && !isLoading">

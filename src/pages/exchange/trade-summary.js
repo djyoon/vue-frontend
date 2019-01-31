@@ -17,9 +17,14 @@ export default {
             favor: false
         }
     },
-    props: ['isMobile', 'market_id'],
+    props: ['isMobile', 'market_id', 'favorChanged'],
     mounted: function() {
         this.requestMarket()
+    },
+    watch: {
+        favorChanged: function() {
+            this.refreshFavor()
+        }
     },
     computed: {
 
@@ -74,6 +79,13 @@ export default {
                 .catch(() => {
                     // 오류 처리 없음
                 })
+        },
+        refreshFavor: function() {
+          let landingFavor = this.$store.state.landingFavor
+          let favors = landingFavor ? landingFavor.split(':') : []
+          const n = favors.indexOf(this.market_id)
+
+          this.favor = n >= 0
         },
         toggleFavor: function() {
             let landingFavor = this.$store.state.landingFavor
