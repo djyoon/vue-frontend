@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { widget } from '../charting_library.min';
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');
   const results = regex.exec(window.location.search);
@@ -84,7 +83,7 @@ export default {
       loading_screen: { backgroundColor: '#1b1e2d' },
       toolbar_bg: '#1b1e2d'
     };
-    const tvWidget = new widget(widgetOptions);
+    const tvWidget = new window.TradingView.widget(widgetOptions);
     this.tvWidget = tvWidget;
     tvWidget.onChartReady(() => {
       const button = tvWidget.createButton()
