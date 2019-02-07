@@ -6,21 +6,21 @@
             ref="slick"
             :options="slickOptionsBanner" class="landing__slidebox" @swipe="handleSwipe">
 
-              <div class="landing__slide" style="background:url(../images/sub/banner-2.png) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
+              <div class="landing__slide" style="background:url(../images/sub/banner-2.jpg) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
                   <h1 class="landing__slide-title">The Financial Hub of Digital Assets</h1>
                   <p class="landing__slide-desc">
                       Nexbill is open to almost all countries around the world, Lao PDR(Laos) incorporated entity or its relevant authorized affiliates.
                   </p>
               </div>
 
-              <div class="landing__slide" style="background:url(../images/sub/banner-2.png) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
+              <div class="landing__slide" style="background:url(../images/sub/banner-2.jpg) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
                   <h1 class="landing__slide-title">A secure and Trustworthy Crypto Assets Exchange</h1>
                   <p class="landing__slide-desc">
                       We are committed to providing the most high-speed trade matching on our innovative and user friendly platform.
                   </p>
               </div>
 
-              <div class="landing__slide" style="background:url(../images/sub/banner-2.png) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
+              <div class="landing__slide" style="background:url(../images/sub/banner-2.jpg) no-repeat center;background-size:cover;" v-bind:style="{ 'background-image': 'url(' + require('../images/sub/banner-2.png') + ')' }">
                   <h1 class="landing__slide-title">The Most Reliable Digital Asset Trading Platform</h1>
                   <p class="landing__slide-desc">
                       You can open a bank account with JDB bank in order to buy and sell Bitcoin, Ethereum, ESR and more.
