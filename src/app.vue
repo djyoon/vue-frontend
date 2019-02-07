@@ -15,14 +15,12 @@
 <script>
 import Navigation from './components/navigation.vue'
 import Footer from './components/footer.vue'
-import store from './store'
 
 export default {
   name: 'App',
   components: {
     Footer,
     Navigation
-  },
-  store
+  }
 }
 </script>

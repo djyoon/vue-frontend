@@ -44,7 +44,8 @@ export default {
             // WebSockte
             websocketConnected: false,
             messagePool: {},
-            max_request_id: 0
+            max_request_id: 0,
+            websocketSupport: false
         }
     },
     components: {
@@ -59,26 +60,33 @@ export default {
         "my-order": MyOrder
     },
     created: function() {
+        if (window.ActiveXObject || !('ActiveXObject' in window)) {
+            this.websocketSupport = true
+        }
+
         this.resetMarket()
     },
     mounted: function() {
         this.handleResize()
         window.addEventListener('resize', this.handleResize)
 
-        this.resultCallbacks = []
-        this.websocketConnected = false
-        this.$options.sockets.onmessage = (ev) => this.websocketMessage(ev)
-        this.$options.sockets.onopen = () => this.websocketOpen()
-        this.$options.sockets.onclose = () => this.websocketClose()
-        this.$connect()
+        if (this.websocketSupport) {
+            this.websocketConnected = false
+            this.$options.sockets.onmessage = (ev) => this.websocketMessage(ev)
+            this.$options.sockets.onopen = () => this.websocketOpen()
+            this.$options.sockets.onclose = () => this.websocketClose()
+            this.$connect()
+        }
 
         this.reloadAccountInfo()
     },
     beforeDestroy: function() {
-        this.$disconnect()
-        delete this.$options.sockets.onmessage
-        delete this.$options.sockets.onopen
-        delete this.$options.sockets.onclose
+        if(this.websocketSupport) {
+            this.$disconnect()
+            delete this.$options.sockets.onmessage
+            delete this.$options.sockets.onopen
+            delete this.$options.sockets.onclose
+        }
 
         window.removeEventListener('resize', this.handleResize)
     },
@@ -96,10 +104,28 @@ export default {
     methods: {
         // 서버측에 전송할 메시지를 배열에 넣는다.
         requestToHost: function(command, params, callback) {
-            this.max_request_id++
-            this.messagePool[this.max_request_id] = {command: command, params: params, callback: callback, sent: false}
+            if(this.websocketSupport) {
+                this.max_request_id++
+                this.messagePool[this.max_request_id] = {command: command, params: params, callback: callback, sent: false}
 
-            this.websocketPopSend()
+                this.websocketPopSend()
+            }
+            else {
+                let data = new FormData();
+                Object.keys(params).forEach((key) => {
+                    data.append(key, params[key])
+                })
+
+                this.$http.post(`${this.apiURI}` + command, data,
+                  { headers: { 'Content-Type': 'text/plain' }})
+                .then((response) => {
+                    const result = response.data
+                    callback(result)
+                })
+                .catch(() => {
+
+                })
+            }
         },
         // 전송할 메시지를 꺼내서 서버로 전송한다.
         websocketPopSend: function() {
