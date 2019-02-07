@@ -54,7 +54,9 @@
         "notMatch": "Password does not match.",
         "enter":"Please enter a password.",
         "invalidToken": "Invalid login token",
-        "invalidOtp": "Invalid OTP"
+        "invalidOtp": "Invalid OTP",
+        "invalidReset": "Invalid password reset token.",
+        "expiredReset": "Expired password reset token."
       }
   },
   "otp":{

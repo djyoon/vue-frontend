@@ -11,6 +11,8 @@ import OtpCreate from '../pages/otp-create.vue'
 import OtpAuth from '../pages/otp-auth.vue'
 import OtpRemove from '../pages/otp-remove.vue'
 import Password from '../pages/password.vue'
+import ForgotPassword from '../pages/forgotpass.vue'
+import ResetPassword from '../pages/resetpass.vue'
 import Balances from '../pages/balances/balances.vue'
 import Orders from '../pages/orders/order-open.vue'
 import OrderHistory from '../pages/orders/order-history.vue'
@@ -34,6 +36,8 @@ const router = new VueRouter({
         { path: '/otp-remove', component : OtpRemove},
         { path: '/account', component: Account },
         { path: '/password', component: Password },
+        { path: '/reset-password', component: ResetPassword },
+        { path: '/forgot', component: ForgotPassword },
         { path: '/balances', component: Balances },
         { path: '/deposit_history', component: DepositHistory },
         { path: '/withdrawal_history', component: WithdrawalHistory },

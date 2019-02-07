@@ -11,8 +11,8 @@
                       <div class="form__group">
                           <label for="" class="form__title">Verification Code</label>
                           <div class="form__box">
-                              <input type="text" class="form__input" placeholder="Enter the 6-digit verification code." v-model="otp_number" v-bind:class="{ wrong: error_message.length > 0 }" maxlength="6">
-                              <p class="form__wrong-text">{{ error_message }}</p>
+                              <input type="text" class="form__input" placeholder="Enter the 6-digit verification code." v-model="otp_number" v-bind:class="{ wrong: err_message.length > 0 }" maxlength="6">
+                              <p class="form__wrong-text">{{ err_message }}</p>
                           </div>
                       </div>
                   </div>

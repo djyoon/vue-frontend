@@ -35,7 +35,7 @@
 
                         <p class="form__wrong-message" v-if="error_common.length > 0">{{ error_common }}</p>
                         <div class="form__group form__group--btnbox">
-                            <button type="submit" class="btn btn--cancel float-left btn--half" :disabled="api_calling" @click="gotoAccount">Cancel</button>
+                            <button type="button" class="btn btn--cancel float-left btn--half" :disabled="api_calling" @click="gotoAccount">Cancel</button>
                             <button type="submit" class="btn btn--confirm float-right btn--half" :disabled="api_calling" @click="changePwd">Confirm</button>
                         </div>
 

@@ -21,6 +21,11 @@ export default {
             this.$router.push('/account')
         }
         else {
+          if(result.auth_type == 1) {
+            const reset_token = result.reset_token
+            this.$router.push({ path: '/reset-password', query: { reset_token: reset_token }})
+          }
+          else
             this.$router.push('/login')
         }
       }

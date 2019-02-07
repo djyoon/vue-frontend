@@ -591,6 +591,7 @@
 .alert-checkmail__box{border:1px solid #676c8c;border-radius:3px;padding:2em 0;width:calc(100% - 2em);max-width:590px;margin:0 auto;text-align:center;}
 .alert-checkmail__title{font-size:1.375rem;font-weight:400;color:#538fff;margin-bottom:1.375em;}
 .alert-checkmail__desc{color:#f1f6ff;font-size:16px;line-height:1.25em;padding:0 16px;box-sizing:border-box;}
+.alert-checkmail__error{color:#e81f37;font-size:16px;line-height:1.25em;padding:0 16px;box-sizing:border-box;}
 
 .alert-checkmail__user-mail{width:100%;background:#538fff;color:#fff;text-align:center;line-height:56px;font-size:1.125rem;margin:1.5em 0 1.5em;}
 .form__text--alert-checkmail{margin-top:1em;line-height:1.5em;}
