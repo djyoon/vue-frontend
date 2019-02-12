@@ -84,8 +84,13 @@ export default {
         withdrawal_amount : function() {
             this.error_withdraw = ''
 
+            if(this.withdrawal_amount.length > 0 && !common.isNumeric(this.withdrawal_amount)) {
+              this.withdrawal_amount = this.withdrawal_amount.replace(/[^0-9/.]/g,'')
+            }
+
             const with_amount = common.isNumeric(this.withdrawal_amount) ? this.withdrawal_amount : 0
-            this.receive_amount = new Decimal(with_amount).sub(this.withdraw_fee)
+            const recv = new Decimal(with_amount).sub(this.withdraw_fee)
+            this.receive_amount = recv.comparedTo("0") < 0 ? 0 : recv;
         },
         checkHideZero: function() {
             this.requestBalance()

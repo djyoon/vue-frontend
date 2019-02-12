@@ -141,7 +141,7 @@
                                 <label for="" class="form__title">Withdrawal Amount (min:{{ min_withdraw |
                                 decimalToString }})</label>
                                 <div class="form__box">
-                                    <input type="number" class="form__input" v-model="withdrawal_amount" :class="{
+                                    <input type="text" class="form__input" v-model="withdrawal_amount" :class="{
                                         wrong: error_withdraw.length > 0 }">
                                     <p class="form__wrong-text" v-if="error_withdraw.length > 0" >{{ error_withdraw
                                         }}</p>

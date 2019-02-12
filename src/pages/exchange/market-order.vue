@@ -22,7 +22,7 @@
                         <div class="market__order-formbox">
                             <div class="market__order-form-inputbox">
                                 <span class="market__order-form-unit market__order-form-unit--left">Price</span>
-                                <input type="number" class="market__order-form-input" v-model="buy.price">
+                                <input type="text" class="market__order-form-input" v-model="buy.price">
                                 <span class="market__order-form-unit market__order-form-unit--right">{{ base.coin_id }}</span>
                             </div>
                             <p class="market__order-form-helptext">≈ {{ buyPriceUsd }} USD</p>
@@ -30,7 +30,7 @@
                         <div class="market__order-formbox">
                             <div class="market__order-form-inputbox">
                                 <span class="market__order-form-unit market__order-form-unit--left">Amount</span>
-                                <input type="number" class="market__order-form-input" v-model="buy.amount">
+                                <input type="text" class="market__order-form-input" v-model="buy.amount">
                                 <span class="market__order-form-unit market__order-form-unit--right">{{ coin.coin_id }}</span>
                             </div>
                             <div class="market__order-form-btnbox clearfix">
@@ -69,7 +69,7 @@
                         <div class="market__order-formbox">
                             <div class="market__order-form-inputbox">
                                 <span class="market__order-form-unit market__order-form-unit--left">Price</span>
-                                <input type="number" class="market__order-form-input" v-model="sell.price">
+                                <input type="text" class="market__order-form-input" v-model="sell.price">
                                 <span class="market__order-form-unit market__order-form-unit--right">{{ base.coin_id }}</span>
                             </div>
                             <p class="market__order-form-helptext">≈ {{ sellPriceUsd }} USD</p>
@@ -77,7 +77,7 @@
                         <div class="market__order-formbox">
                             <div class="market__order-form-inputbox">
                                 <span class="market__order-form-unit market__order-form-unit--left">Amount</span>
-                                <input type="number" class="market__order-form-input" v-model="sell.amount">
+                                <input type="text" class="market__order-form-input" v-model="sell.amount">
                                 <span class="market__order-form-unit market__order-form-unit--right">{{ coin.coin_id }}</span>
                             </div>
                             <div class="market__order-form-btnbox clearfix">

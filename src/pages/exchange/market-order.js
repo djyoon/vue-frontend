@@ -1,4 +1,5 @@
 import {Decimal} from 'decimal.js';
+import common from "../../components/common.js"
 
 const amountRate = [0.1, 0.25, 0.5, 0.75, 1]
 
@@ -27,6 +28,26 @@ export default {
         selectedPrice: function() {
             this.buy.price = this.selectedPrice
             this.sell.price = this.selectedPrice
+        },
+        'buy.price': function() {
+            if(this.buy.price.length > 0 && !common.isNumeric(this.buy.price))  {
+              this.buy.price = this.buy.price.replace(/[^0-9/.]/g,'')
+            }
+        },
+        'buy.amount': function() {
+            if(this.buy.amount.length > 0 && !common.isNumeric(this.buy.amount))  {
+              this.buy.amount = this.buy.amount.replace(/[^0-9/.]/g,'')
+            }
+        },
+        'sell.price': function() {
+            if(this.sell.price.length > 0 && !common.isNumeric(this.sell.price))  {
+              this.sell.price = this.sell.price.replace(/[^0-9/.]/g,'')
+            }
+        },
+        'sell.amount': function() {
+            if(this.sell.amount.length > 0 && !common.isNumeric(this.sell.amount))  {
+              this.sell.amount = this.sell.amount.replace(/[^0-9/.]/g,'')
+            }
         }
     },
     computed: {
@@ -37,7 +58,7 @@ export default {
             return new Decimal(this.trade_fee).times("0.01").times(this.buy.amount.length > 0 ? this.buy.amount : 0).toFixed(8)
         },
         buyPriceUsd: function() {
-            return new Decimal(this.buy.price.length > 0 ? this.buy.price : 0).times(this.base.price_usd).toFixed(4)
+            return new Decimal(this.buy.price.length > 0  ? this.buy.price : 0).times(this.base.price_usd).toFixed(4)
         },
         sellTotal: function() {
             return new Decimal(this.sell.price.length > 0 ? this.sell.price : 0).times(this.sell.amount.length > 0 ? this.sell.amount : 0).toFixed(8)
@@ -167,6 +188,8 @@ export default {
                             this.sell.price = "0"
                             this.sell.amount = "0"
                         }
+
+                        this.$emit("reloadAccountBalance")
                     } else {
                         switch (result.code) {
                             case -1:

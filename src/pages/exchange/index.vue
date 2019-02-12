@@ -54,6 +54,7 @@
                 <div class="market__bottom clearfix">
                     <market-order v-if="visibleTabTrade"
                         v-on:addAlert="addAlert"
+                        v-on:reloadAccountBalance="reloadAccountBalance"
                         :market_id="market_id"
                         :assets="myAssets"
                         :trade_fee="trade_fee"

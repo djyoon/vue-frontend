@@ -12,7 +12,6 @@ const isEmpty = function(value) {
 }
 
 const isNumeric = function (obj) {
-    obj = typeof(obj) === "string" ? obj.replace(/,/g, "") : obj;
     return !isNaN(parseFloat(obj)) && isFinite(obj) && Object.prototype.toString.call(obj).toLowerCase() !== "[object array]";
 }
 
@@ -36,5 +35,5 @@ export default {
     isEmpty,
     marketDeptMenu,
     typeDeptMenu,
-    isNumeric    
+    isNumeric
 }
