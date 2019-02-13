@@ -205,6 +205,7 @@ export default {
                         }
 
                         this.$emit("reloadAccountBalance")
+                        this.$emit("reloadMyOrder")
                     } else {
                         switch (result.code) {
                             case -1:
@@ -236,7 +237,6 @@ export default {
                 { "login_token": this.$store.state.loginToken, "market_id": this.market_id }, this.resultTradeNotify)
         },
         resultTradeNotify: function(data) {
-            console.log(data)
             const result = data.result
             if (result.code == 1) {
                 if(result.data.length > 0) {
@@ -253,6 +253,8 @@ export default {
                           this.$t("exchange.exchangeComplete").replace("{quantity}", quantity).replace("{coin}", coin_id).replace("{type}", typeStr)
                           : this.$t("exchange.cancelOrderComplete"))
                   })
+
+                  this.$emit("reloadMyOrder")
                 }
             } else {
                 switch (result.code) {

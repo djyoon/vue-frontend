@@ -56,6 +56,7 @@
                         v-on:addAlert="addAlert"
                         v-on:reloadAccountBalance="reloadAccountBalance"
                         v-on:requestToHost="requestToHost"
+                        v-on:reloadMyOrder="reloadMyOrder"
                         :market_id="market_id"
                         :assets="myAssets"
                         :trade_fee="trade_fee"
@@ -79,6 +80,7 @@
                     :isLogin = "isLogin"
                     :isMobile="isMobile"
                     :isTablet="isTablet"
+                    :refresh="myOrderRefresh"
                     v-on:requestToHost="requestToHost"></my-order>
 
                 <market-history v-if="isTablet"

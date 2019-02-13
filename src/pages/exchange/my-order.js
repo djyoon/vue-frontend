@@ -1,7 +1,5 @@
 import { Decimal } from 'decimal.js'
 
-let refreshTimer = null
-
 export default {
     data: function() {
         return {
@@ -9,26 +7,20 @@ export default {
             historyClose: [],
             coin_id: "",
             market_base: "",
-            tab: 0,
-            refresh: 0
+            tab: 0
         }
     },
-    props: [ 'market_id', "isMobile", "isTablet", "isLogin" ],
-    mounted: function() {
-        refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
-    },
+    props: [ 'market_id', "isMobile", "isTablet", "isLogin", "refresh" ],
     watch: {
         isLogin: function() {
             this.requestHistoryOpen()
+        },
+        refresh: function() {
+            this.requestHistoryOpen()
         }
-    },
-    beforeDestroy: function () {
-        if(refreshTimer)
-            clearTimeout(refreshTimer)
     },
     methods: {
         requestHistoryOpen: function() {
-            refreshTimer = false;
             if(!this.isLogin) return
 
             this.coin_id = this.market_id.split('_')[0]
@@ -57,7 +49,6 @@ export default {
                 }
             }
 
-            this.refresh++
             this.requestHistoryClose()
         },
         requestHistoryClose() {
@@ -85,9 +76,6 @@ export default {
                         break
                 }
             }
-
-            this.refresh++
-            refreshTimer = setTimeout(() => this.requestHistoryOpen(), 1000)
         },
         changeTab: function(tab) {
             this.tab = tab

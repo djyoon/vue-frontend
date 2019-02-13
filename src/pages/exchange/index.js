@@ -31,6 +31,7 @@ export default {
             min_order: 1,
             selectedPrice: 0,
             favorChanged: 0,
+            myOrderRefresh: 0,
 
             // Error
             has_error: false,
@@ -314,6 +315,9 @@ export default {
         },
         toggleFavor() {
             this.favorChanged++;
+        },
+        reloadMyOrder() {
+            this.myOrderRefresh++;
         }
     }
 }
