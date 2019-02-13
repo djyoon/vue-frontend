@@ -17,13 +17,16 @@ export default {
             favor: false
         }
     },
-    props: ['isMobile', 'market_id', 'favorChanged'],
+    props: ['isMobile', 'market_id', 'favorChanged', 'refresh'],
     mounted: function() {
         this.requestMarket()
     },
     watch: {
         favorChanged: function() {
             this.refreshFavor()
+        },
+        refresh: function() {
+            this.requestMarket()
         }
     },
     computed: {

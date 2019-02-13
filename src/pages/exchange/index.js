@@ -32,6 +32,7 @@ export default {
             selectedPrice: 0,
             favorChanged: 0,
             myOrderRefresh: 0,
+            tradeHistoryRefresh: 0,
 
             // Error
             has_error: false,
@@ -318,6 +319,9 @@ export default {
         },
         reloadMyOrder() {
             this.myOrderRefresh++;
+        },
+        reloadTradeHistory() {
+            this.tradeHistoryRefresh++;
         }
     }
 }

@@ -30,6 +30,7 @@
                 <trade-summary v-if="isMobile && visibleTabTrade"
                     :isMobile="isMobile"
                     :market_id="market_id"
+                    :refresh="tradeHistoryRefresh"
                     v-on:refreshMarketList="refreshMarketList"
                     v-on:requestToHost="requestToHost"
                     :favorChanged="favorChanged"></trade-summary>
@@ -37,13 +38,15 @@
                 <order-book v-if="visibleTabTrade"
                     :market_id="market_id"
                     v-on:selectPrice="selectPrice"
-                    v-on:requestToHost="requestToHost"></order-book>
+                    v-on:requestToHost="requestToHost"
+                    v-on:reloadTradeHistory="reloadTradeHistory"></order-book>
             </div>
 
             <div class="market" v-bind:class="{'float-left': !isMobile}">
                 <trade-summary v-if="!isMobile"
                     :isMobile="isMobile"
                     :market_id="market_id"
+                    :refresh="tradeHistoryRefresh"
                     v-on:refreshMarketList="refreshMarketList"
                     v-on:requestToHost="requestToHost"
                     :favorChanged="favorChanged"></trade-summary>
@@ -69,6 +72,7 @@
 
                     <market-history v-if="visibleTabChart"
                         v-on:requestToHost="requestToHost"
+                        :refresh="tradeHistoryRefresh"
                         :market_id="market_id"></market-history>
                 </div>
             </div>
@@ -86,6 +90,7 @@
                 <market-history v-if="isTablet"
                     :isTablet="isTablet"
                     v-on:requestToHost="requestToHost"
+                    :refresh="tradeHistoryRefresh"
                     :market_id="market_id"></market-history>
             </div>
         </div>

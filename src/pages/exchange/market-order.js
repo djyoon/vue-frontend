@@ -4,6 +4,22 @@ import common from "../../components/common.js"
 const amountRate = [0.1, 0.25, 0.5, 0.75, 1]
 let refreshTimer = null
 
+function isInputNumber(numStr) {
+    return numStr.length > 0 && common.isNumeric(numStr)
+}
+
+function convertNumericOnly(numStr) {
+    if(numStr.length > 0 && !common.isNumeric(numStr))  {
+        return numStr.replace(/[^0-9/.]/g,'')
+    }
+
+    return numStr
+}
+
+function convertNumericString(numStr) {
+    return isInputNumber(numStr) ? numStr : "0"
+}
+
 export default {
     data: function() {
         return {
@@ -30,7 +46,7 @@ export default {
             this.resetMarket()
         },
         isLogin: function() {
-          this.requestTradeNotify()
+            this.requestTradeNotify()
         },
         assets: function() {
             this.resetBalance()
@@ -40,44 +56,36 @@ export default {
             this.sell.price = this.selectedPrice
         },
         'buy.price': function() {
-            if(this.buy.price.length > 0 && !common.isNumeric(this.buy.price))  {
-              this.buy.price = this.buy.price.replace(/[^0-9/.]/g,'')
-            }
+            this.buy.price = convertNumericOnly(this.buy.price)
         },
         'buy.amount': function() {
-            if(this.buy.amount.length > 0 && !common.isNumeric(this.buy.amount))  {
-              this.buy.amount = this.buy.amount.replace(/[^0-9/.]/g,'')
-            }
+            this.buy.amount = convertNumericOnly(this.buy.amount)
         },
         'sell.price': function() {
-            if(this.sell.price.length > 0 && !common.isNumeric(this.sell.price))  {
-              this.sell.price = this.sell.price.replace(/[^0-9/.]/g,'')
-            }
+            this.sell.price = convertNumericOnly(this.sell.price)
         },
         'sell.amount': function() {
-            if(this.sell.amount.length > 0 && !common.isNumeric(this.sell.amount))  {
-              this.sell.amount = this.sell.amount.replace(/[^0-9/.]/g,'')
-            }
+            this.sell.amount = convertNumericOnly(this.sell.amount)
         }
     },
     computed: {
         buyTotal: function() {
-            return new Decimal(this.buy.price.length > 0 ? this.buy.price : 0).times(this.buy.amount.length > 0 ? this.buy.amount : 0).toFixed(8)
+            return new Decimal(convertNumericString(this.buy.price)).times(convertNumericString(this.buy.amount)).toFixed(8)
         },
         buyFee: function() {
-            return new Decimal(this.trade_fee).times("0.01").times(this.buy.amount.length > 0 ? this.buy.amount : 0).toFixed(8)
+            return new Decimal(this.trade_fee).times("0.01").times(convertNumericString(this.buy.amount)).toFixed(8)
         },
         buyPriceUsd: function() {
-            return new Decimal(this.buy.price.length > 0  ? this.buy.price : 0).times(this.base.price_usd).toFixed(4)
+            return new Decimal(convertNumericString(this.buy.price)).times(this.base.price_usd).toFixed(4)
         },
         sellTotal: function() {
-            return new Decimal(this.sell.price.length > 0 ? this.sell.price : 0).times(this.sell.amount.length > 0 ? this.sell.amount : 0).toFixed(8)
+            return new Decimal(convertNumericString(this.sell.price)).times(convertNumericString(this.sell.amount)).toFixed(8)
         },
         sellFee: function() {
-            return new Decimal(this.trade_fee).times("0.01").times(this.sell.amount.length > 0 ? this.sell.amount : 0).toFixed(8)
+            return new Decimal(this.trade_fee).times("0.01").times(convertNumericString(this.sell.amount)).toFixed(8)
         },
         sellPriceUsd: function() {
-            return new Decimal(this.sell.price.length > 0 ? this.sell.price : 0).times(this.base.price_usd).toFixed(4)
+            return new Decimal(convertNumericString(this.sell.price)).times(this.base.price_usd).toFixed(4)
         },
         realFeeRate: function() {
             return new Decimal(this.trade_fee).times(new Decimal(1).minus(new Decimal(this.fee_discount).times(0.01))).toString()
@@ -93,6 +101,12 @@ export default {
                 return this.$t('exchange.buyCoin').replace("{coin}", this.coin.coin_id)
             else
                 return this.$t('exchange.loginBuy')
+        },
+        coinBalance: function() {
+            return new Decimal(this.coin.balance).toString()
+        },
+        baseBalance: function() {
+            return new Decimal(this.base.balance).toString()
         }
     },
     methods: {

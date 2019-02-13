@@ -16,7 +16,8 @@ export default {
               "time": 0,
               "type": "buy",
               "price": "0.0",
-              "quantity": "0"
+              "quantity": "0",
+              "trade_count": "0"
             },
             mode: 0,
             group: 0,
@@ -64,8 +65,12 @@ export default {
             if (result.code == 1) {
                 this.buyFull = result.data.buy
                 this.sellFull = result.data.sell
-                this.last = result.data.last
 
+                if(this.last.trade_count != result.data.last.trade_count)
+                    this.$emit("reloadTradeHistory")
+
+                this.last = result.data.last
+                
                 let total = new Decimal(0)
                 this.buyFull.forEach((row) => {
                     total = total.plus(row.quantity)

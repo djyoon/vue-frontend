@@ -14,8 +14,8 @@
             </div>
             <div class="market__order-form market__order-form-buy float-left" v-if="(!isMobile && !isTablet) || tradeTab == 0">
                 <div class="market__order-form-top clearfix">
-                    Available {{ base.balance }} {{ base.coin_id }}
-                    <router-link to="/balances" class="float-right">Deposit</router-link>
+                    Available {{ baseBalance }} {{ base.coin_id }}
+                    <router-link to="/balances" class="market__order-form-deposit">Deposit</router-link>
                 </div>
                 <div class="market__order-formzone">
                     <form action="">
@@ -61,8 +61,8 @@
             </div>
             <div class="market__order-form market__order-form-sell float-left" v-if="(!isMobile && !isTablet) || tradeTab == 1">
                 <div class="market__order-form-top clearfix">
-                    Available {{ coin.balance }} {{ coin.coin_id }}
-                    <router-link to="/balances" class="float-right">Deposit</router-link>
+                    Available {{ coinBalance }} {{ coin.coin_id }}
+                    <router-link to="/balances" class="market__order-form-deposit">Deposit</router-link>
                 </div>
                 <div class="market__order-formzone">
                     <form action="">
