@@ -21,7 +21,7 @@
                 <button class=" select--custom--view i-am-a-popover-trigger" v-on:click="toggleGroupMenu"><span>Group</span> {{ groupFormat }}</button>
                 <ul class="select--custom i-am-a-popover close-me-by-clicking-outside-of-me" v-if="showGroupMenu" v-on-click-outside="closeGroupMenu">
                     <li class="select__option" v-for="(price, index) in priceGroup" :key="index"><button type="button"
-                      @click="selectGroup(index)" :class="{active: depth == index}">{{ price }}</button></li>
+                      @click="selectGroup(index)" :class="{active: group == index}">{{ price }}</button></li>
                 </ul>
             </div>
         </div>

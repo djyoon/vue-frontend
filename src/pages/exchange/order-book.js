@@ -1,9 +1,11 @@
+import { mixin as onClickOutside } from 'vue-on-click-outside'
 import {Decimal} from 'decimal.js'
 import numeral from 'numeral'
 
 let refreshTimer = null
 
 export default {
+    mixins: [onClickOutside],
     data: function() {
         return {
             sell: [],

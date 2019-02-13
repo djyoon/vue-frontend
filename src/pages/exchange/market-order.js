@@ -2,6 +2,7 @@ import {Decimal} from 'decimal.js';
 import common from "../../components/common.js"
 
 const amountRate = [0.1, 0.25, 0.5, 0.75, 1]
+let refreshTimer = null
 
 export default {
     data: function() {
@@ -17,10 +18,19 @@ export default {
     props: [ 'market_id', 'assets', 'trade_fee', 'isMobile', 'isTablet', 'min_order', 'fee_discount', "isLogin", "selectedPrice" ],
     mounted: function() {
         this.resetMarket()
+
+        refreshTimer = setTimeout(() => this.requestTradeNotify(), 1000)
+    },
+    beforeDestroy: function () {
+        if(refreshTimer)
+            clearTimeout(refreshTimer)
     },
     watch: {
         market_id: function() {
             this.resetMarket()
+        },
+        isLogin: function() {
+          this.requestTradeNotify()
         },
         assets: function() {
             this.resetBalance()
@@ -74,13 +84,13 @@ export default {
         },
         buttonSell: function() {
             if(this.isLogin)
-                return this.$t('exchange.sell').replace("{coin}", this.coin.coin_id)
+                return this.$t('exchange.sellCoin').replace("{coin}", this.coin.coin_id)
             else
                 return this.$t('exchange.loginSell')
         },
         buttonBuy: function() {
             if(this.isLogin)
-                return this.$t('exchange.buy').replace("{coin}", this.coin.coin_id)
+                return this.$t('exchange.buyCoin').replace("{coin}", this.coin.coin_id)
             else
                 return this.$t('exchange.loginBuy')
         }
@@ -178,7 +188,12 @@ export default {
                 .then((response) => {
                     const result = response.data.result
                     if (result.code == 1) {
-                        this.addAlert("success", type === "buy" ? this.buttonBuy : this.buttonSell, this.$t("exchange.orderComplete"))
+                        const coin_id = this.coin.coin_id
+                        const quantityStr = new Decimal(quantity).toString()
+                        const typeStr = type === "buy" ? this.$t("exchange.buy") : this.$t("exchange.sell")
+
+                        this.addAlert("success", type === "buy" ? this.buttonBuy : this.buttonSell,
+                          this.$t("exchange.orderComplete").replace("{quantity}", quantityStr).replace("{coin}", coin_id).replace("{type}", typeStr))
 
                         if(type === "buy") {
                             this.buy.price = "0"
@@ -213,6 +228,45 @@ export default {
                 .catch(() => {
                     // 오류 처리 안함
                 })
+        },
+        requestTradeNotify: function() {
+            refreshTimer = false;
+            if(!this.isLogin) return
+            this.$emit("requestToHost", "trade_notify",
+                { "login_token": this.$store.state.loginToken, "market_id": this.market_id }, this.resultTradeNotify)
+        },
+        resultTradeNotify: function(data) {
+            console.log(data)
+            const result = data.result
+            if (result.code == 1) {
+                if(result.data.length > 0) {
+                  result.data.forEach((row, index) => {
+                      const coin_id = this.coin.coin_id
+                      // const price = new Decimal(row.price).toString();
+                      const quantity = new Decimal(row.quantity).toString()
+                      const typeStr = row.type === "buy" ? this.$t("exchange.buy") : this.$t("exchange.sell")
+
+                      this.addAlert("success",
+                        row.notify_type == 0 ? (row.type === "buy" ? this.buttonBuy : this.buttonSell)
+                          : this.$t("exchange.cancelOrder"),
+                        row.notify_type == 0 ?
+                          this.$t("exchange.exchangeComplete").replace("{quantity}", quantity).replace("{coin}", coin_id).replace("{type}", typeStr)
+                          : this.$t("exchange.cancelOrderComplete"))
+                  })
+                }
+            } else {
+                switch (result.code) {
+                    case -1:
+                    case -97:
+                    case -98:
+                    case -99:
+                    default:
+                        // 오류 처리 안함
+                        break
+                }
+            }
+
+            refreshTimer = setTimeout(() => this.requestTradeNotify(), 1000)
         },
         addAlert: function(type, title, desc) {
             this.$emit("addAlert", type, title, desc)

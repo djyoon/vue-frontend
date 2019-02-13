@@ -55,6 +55,7 @@
                     <market-order v-if="visibleTabTrade"
                         v-on:addAlert="addAlert"
                         v-on:reloadAccountBalance="reloadAccountBalance"
+                        v-on:requestToHost="requestToHost"
                         :market_id="market_id"
                         :assets="myAssets"
                         :trade_fee="trade_fee"

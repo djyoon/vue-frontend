@@ -28,6 +28,7 @@ export default {
     },
     methods: {
         requestHistoryOpen: function() {
+            refreshTimer = false;
             if(!this.isLogin) return
 
             this.coin_id = this.market_id.split('_')[0]
