@@ -49,7 +49,6 @@
 .haeder__user-mail{color:#538fff}
 .header__btn-menu{position:absolute;right:1em;top:50%;transform:translateY(-50%);display:none;}
 @media screen and (max-width:767px){
-    .header__logo .logo_typo,
     .header__gnb{display:none;}
     .header__oauth{display:none;}
     .header__btn-menu{display:block;}
