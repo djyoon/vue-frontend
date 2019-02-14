@@ -6,7 +6,9 @@ export default {
     return {
       showMobileGnb: false,
       showAccountMenu: false,
-      showLanguageMenu: false
+      showLanguageMenu: false,
+      befLogin: false,
+      ncount: 0
     }
   },
   computed: {
@@ -45,14 +47,28 @@ export default {
           { headers: { 'Content-Type': 'text/plain' }})
         .then((response) => {
           const result = response.data.result
-          if(result.code != 1) {
+          if(result.code == 1) {
+            this.befLogin = true
+            setTimeout(() => this.checkLogin(), 60000)
+          }
+          else {
             // 로그인 되어 있지 않은 경우 오류처리 없이 로그아웃 처리
             this.$store.commit('logout')
+
+            if(this.befLogin) {
+              // 로그아웃 된경우 화면을 강제로 갱신
+              location.reload()
+            }
           }
         })
         .catch(() => {
           // 오류처리 없이 로그아웃 처리
           this.$store.commit('logout')
+
+          if(this.befLogin) {
+            // 로그아웃 된경우 화면을 강제로 갱신
+            location.reload()
+          }
         })
       }
     }
