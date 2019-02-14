@@ -83,7 +83,8 @@ export default {
             }
         },
         changeTab: function(tab) {
-            this.$refs.Scrollbar.scrollToY(0)
+            if(this.$refs.Scrollbar != null)
+              this.$refs.Scrollbar.scrollToY(0)
             this.tab = tab
         },
         gotoMore: function() {
