@@ -16,8 +16,8 @@
                     <h2 class="state__viewer-body-th state__viewer-body-th--order text-right float-left">Unexecuted({{ coin_id }})</h2>
                     <h2 class="state__viewer-body-th state__viewer-body-th--order text-right float-left">Action</h2>
                 </div>
-                <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyOpen.length > 0">
-                    <div class="scroll-me">
+                <vue-scrollbar class="state__viewer-bodybox" ref="Scrollbar" v-if="historyOpen.length > 0">
+                    <div>
                         <div class="state__viewer-body-row clearfix" v-for="row in historyOpen" :key="row.index">
                             <h2 class="state__viewer-col state__viewer-col--order text-left float-left"><span class="mobile-unit">Date</span>{{ row.time | moment(isTablet ? "MMM D, HH:mm" : "MMM D YYYY, HH:mm")}}</h2>
                             <h2 class="state__viewer-col state__viewer-col--order float-left"
@@ -39,7 +39,7 @@
                             </h2>
                         </div>
                     </div>
-                </vue-nice-scrollbar>
+                </vue-scrollbar>
                 <div class="state__nodata" v-if="historyOpen.length <= 0">
                     <img src="../../images/main/clipboards.png"
                          srcset="../../images/main/clipboards@2x.png 2x,
@@ -57,8 +57,8 @@
                     <h2 class="state__viewer-body-th state__viewer-body-th--order text-right float-left">Total({{ market_base }})</h2>
                     <h2 class="state__viewer-body-th state__viewer-body-th--order text-right float-left">Average Price ({{ market_base }})</h2>
                 </div>
-                <vue-nice-scrollbar v-bind:speed="100" theme="light" display="vertical" class="state__viewer-bodybox" :refresh="refresh" v-if="historyClose.length > 0">
-                    <div class="scroll-me">
+                <vue-scrollbar class="state__viewer-bodybox" ref="Scrollbar" v-if="historyClose.length > 0">
+                    <div>
                         <div class="state__viewer-body-row clearfix" v-for="row in historyClose" :key="row.index">
                             <h2 class="state__viewer-col state__viewer-col--order text-left float-left">
                                 <span class="mobile-unit">Date</span>{{ row.time | moment(isTablet ? "MMM D, HH:mm" : "MMM D YYYY, HH:mm")}}</h2>
@@ -77,7 +77,7 @@
                                 <span class="mobile-unit">Average Price ({{ market_base }})</span>{{ row.price }}</h2>
                         </div>
                     </div>
-                </vue-nice-scrollbar>
+                </vue-scrollbar>
                 <div class="state__nodata" v-if="historyClose.length <= 0">
                     <img src="../../images/main/clipboards.png"
                          srcset="../../images/main/clipboards@2x.png 2x,
@@ -90,3 +90,59 @@
 </template>
 
 <script src="./my-order.js"></script>
+<style>
+.vue-scrollbar-transition, .vue-scrollbar__scrollbar-vertical, .vue-scrollbar__scrollbar-horizontal {
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+}
+.vue-scrollbar-transition--scrollbar {
+  transition: opacity 0.5s linear;
+  -moz-transition: opacity 0.5s linear;
+  -webkit-transition: opacity 0.5s linear;
+  -o-transition: opacity 0.5s linear;
+}
+
+.vue-scrollbar__wrapper {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  /* background: white; */
+}
+.vue-scrollbar__wrapper:hover .vue-scrollbar__scrollbar-vertical, .vue-scrollbar__wrapper:hover .vue-scrollbar__scrollbar-horizontal {
+  opacity: 1;
+}
+.vue-scrollbar__scrollbar-vertical, .vue-scrollbar__scrollbar-horizontal {
+  opacity: 0.5;
+  position: absolute;
+  background: transparent;
+}
+.vue-scrollbar__scrollbar-vertical:hover, .vue-scrollbar__scrollbar-horizontal:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.vue-scrollbar__scrollbar-vertical .scrollbar, .vue-scrollbar__scrollbar-horizontal .scrollbar {
+  position: relative;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: default;
+  border-radius: 3px;
+}
+.vue-scrollbar__scrollbar-vertical {
+  width: 6px;
+  height: 100%;
+  top: 0;
+  right: 0;
+}
+.vue-scrollbar__scrollbar-vertical .scrollbar {
+  width: 6px;
+}
+.vue-scrollbar__scrollbar-horizontal {
+  height: 10px;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+}
+.vue-scrollbar__scrollbar-horizontal .scrollbar {
+  height: 10px;
+}
+</style>

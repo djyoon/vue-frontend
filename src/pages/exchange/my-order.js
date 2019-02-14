@@ -1,6 +1,8 @@
 import { Decimal } from 'decimal.js'
+import VueScrollbar from 'vue2-scrollbar'
 
 export default {
+    components: { VueScrollbar },
     data: function() {
         return {
             historyOpen: [],
@@ -81,6 +83,7 @@ export default {
             }
         },
         changeTab: function(tab) {
+            this.$refs.Scrollbar.scrollToY(0)
             this.tab = tab
         },
         gotoMore: function() {

@@ -125,8 +125,20 @@ export default {
             this.tradeTab = index
         },
         setBuyRate: function(index) {
-            if(new Decimal(this.buy.price).comparedTo(0) > 0)
-                this.buy.amount = new Decimal(this.base.balance).dividedBy(this.buy.price).times(amountRate[index]).toString()
+            if(new Decimal(convertNumericString(this.buy.price)).comparedTo(0) > 0) {
+                let amount = new Decimal(this.base.balance)
+                    .dividedBy(convertNumericString(this.buy.price)).times(amountRate[index]).toString()
+
+                // 소수점 4자리까지만 표시
+                let cols =  amount.split('.')
+                if(cols.length > 1) {
+                    if(cols[1].length > 4) {
+                      amount = cols[0] + "." + cols[1].substring(0, 4)
+                    }
+                }
+
+                this.buy.amount = amount
+            }
         },
         setSellRate: function(index) {
             this.sell.amount = new Decimal(this.coin.balance).times(amountRate[index]).toString()
@@ -134,8 +146,8 @@ export default {
         orderBuy: function() {
             if(this.isLogin) {
                 const balance = new Decimal(this.base.balance)
-                const price = new Decimal(this.buy.price)
-                const amount = new Decimal(this.buy.amount)
+                const price = new Decimal(convertNumericString(this.buy.price))
+                const amount = new Decimal(convertNumericString(this.buy.amount))
                 const total = amount.times(price)
 
                 if(price.comparedTo(0) == 0 || amount.comparedTo(0) == 0) {
@@ -162,8 +174,8 @@ export default {
         orderSell: function() {
             if(this.isLogin) {
                 const balance = new Decimal(this.coin.balance)
-                const price = new Decimal(this.sell.price)
-                const amount = new Decimal(this.sell.amount)
+                const price = new Decimal(convertNumericString(this.sell.price))
+                const amount = new Decimal(convertNumericString(this.sell.amount))
 
                 if(price.comparedTo(0) == 0 || amount.comparedTo(0) == 0) {
                     this.addAlert("warning", this.buttonSell, this.$t("exchange.enterValue"))

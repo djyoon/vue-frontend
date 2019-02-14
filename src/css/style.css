@@ -362,7 +362,7 @@
 .order__header-tab-btn span{color:#676c8c;}
 .order__header-tab-btn.active span{color:#676c8c;}
 .order__header-more{color:#538fff;line-height:50px;font-size:12px;}
-.state__viewer-bodybox{height:288px;overflow:hidden;}
+.state__viewer-bodybox{height:288px;}
 .state__viewer__body--order{display:none;}
 .state__viewer__body--order.state__order-view1{display:block;}
 .state__viewer__body--order .state__viewer-body-row:nth-child(odd){background:rgba(255, 255, 255, 0.03)}
