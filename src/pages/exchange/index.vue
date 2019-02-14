@@ -85,6 +85,7 @@
                     :isMobile="isMobile"
                     :isTablet="isTablet"
                     :refresh="myOrderRefresh"
+                    :realMobile="realMobile"
                     v-on:requestToHost="requestToHost"></my-order>
 
                 <market-history v-if="isTablet"

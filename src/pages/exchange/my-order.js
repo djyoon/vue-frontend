@@ -12,9 +12,13 @@ export default {
             tab: 0
         }
     },
-    props: [ 'market_id', "isMobile", "isTablet", "isLogin", "refresh" ],
+    props: [ 'market_id', "isMobile", "isTablet", "isLogin", "refresh", "realMobile" ],
     mounted: function() {
-      this.requestHistoryOpen()
+        this.requestHistoryOpen()
+        window.addEventListener('resize', this.handleResize)
+    },
+    beforeDestroy: function() {
+        window.removeEventListener('resize', this.handleResize)
     },
     watch: {
         isLogin: function() {
@@ -82,9 +86,17 @@ export default {
                 }
             }
         },
+        toScrollTop: function() {
+            if(!this.realMobile) {
+                if(this.$refs.Scrollbar != null)
+                    this.$refs.Scrollbar.scrollToY(0)
+            }
+        },
+        handleResize: function() {
+            this.toScrollTop()
+        },
         changeTab: function(tab) {
-            if(this.$refs.Scrollbar != null)
-              this.$refs.Scrollbar.scrollToY(0)
+            this.toScrollTop()
             this.tab = tab
         },
         gotoMore: function() {

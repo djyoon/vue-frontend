@@ -242,7 +242,7 @@
 
 @media screen and (max-width:767px){
     .state{width:100%;}
-    .state__viewer-body-row.mobile-no-show{display:none;}
+    .state__viewer-body-row .mobile-no-show{display:none;}
 }
 
 .market{padding-left:.5em;width:calc(100% - 22em);box-sizing:border-box;}
@@ -386,18 +386,21 @@
     .market__tradehistory--tablet{display:block;width:calc(50% - .5em);margin-left:.5em;height:414px;}
     .order .state__viewer-body-th{display:none;}
 
-    .state__viewer-bodybox{height:359px;}
+    .state__viewer-bodybox{height:359px;overflow:scroll;overflow-x:hidden;}
 
-    .state__viewer-body-row{margin-bottom:2px;}
+    /* .state__viewer-body-row{margin-bottom:2px;} */
+    .order .state__viewer-body-row{padding:.5em 0 0 0;}
     .state__viewer-col--order .mobile-unit {font-size:10px;color:#676c8c;display:block;}
     .state__viewer-col--order {line-height: 14px; margin-bottom: .5em;}
+
+    .state__viewer__body--order .mobile-no-show {display: none;}
+    .state__viewer__body--order .mobile-unit {text-align: right}
 }
 @media screen and (max-width:767px){
     .market__tradehistory--tablet{display:none !important}
     .market__tradehistory{display:block;width:100%;margin-top:.5em;}
     .order{width:100%;}
     .state__viewer-col--order{width:33.333%;white-space: nowrap;}
-    .order .state__viewer-body-row{padding:.5em 0;}
 
     /*
     .mobile-market__order-form-tabbox button{position:relative;border:0 !important;background:none;width:47.5%;margin-right:5%;}

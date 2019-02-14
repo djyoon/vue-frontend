@@ -33,6 +33,7 @@ export default {
             favorChanged: 0,
             myOrderRefresh: 0,
             tradeHistoryRefresh: 0,
+            realMobile: false,
 
             // Error
             has_error: false,
@@ -62,6 +63,11 @@ export default {
         "my-order": MyOrder
     },
     created: function() {
+        const filter = "windows phone|android|iPad|iPhone|iPod"
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if(userAgent)
+           this.realMobile = filter.indexOf( userAgent.toLowerCase() ) >= 0
+
         if (window.ActiveXObject || !('ActiveXObject' in window)) {
             this.websocketSupport = true
         }
