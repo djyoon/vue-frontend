@@ -11,6 +11,9 @@ export default {
         }
     },
     props: [ 'market_id', "isMobile", "isTablet", "isLogin", "refresh" ],
+    mounted: function() {
+      this.requestHistoryOpen()
+    },
     watch: {
         isLogin: function() {
             this.requestHistoryOpen()

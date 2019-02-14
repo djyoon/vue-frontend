@@ -11,6 +11,7 @@ export default {
     props: [ 'market_id', 'isTablet', 'refresh' ],
     mounted: function() {
         this.bef24h = Date.now() / 1000 - 24 * 60 * 60
+        this.requestHistory()
     },
     watch: {
         refresh: function() {

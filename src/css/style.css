@@ -328,28 +328,29 @@
 .market__order-total li{line-height:2em;}
 .market__order-total p{color:#bcccef;}
 .market__order-total span{color:#676c8c;}
-@media screen and (max-width:767px){
-    .market__bottom{margin-top:0 !important;}
-    .market__order{margin-top:8px;}
-    .market__order-form{height:301px;}
-}
 
 .market__tradehistory{width:calc(35% - .5em);height:400px;overflow:hidden;background:#0f1223}
 .market__tradehistory-header{height:50px;line-height:50px;color:#bcccef;font-size:14px;padding:0 1em;box-sizing:border-box;border-bottom:1px solid #212337;}
 
 .market__order-form .not__oauth{height:32px;font-size:14px;color:#fff;line-height:32px;padding:0 16px;box-sizing:border-box;border-radius:3px;background:#2a2d45;text-align:center;margin-top:24px;}
 
-
 @media screen and (max-width:1024px){
     .market__order{width:100%;height:400px;}
     .market__tradehistory{display:none;}
-    .market__order-form-submit{width:calc(100% - 2em);left:1em;bottom:0px;}
+    .market__order-form-submit{width:calc(100% - 2em);left:1em;bottom:52px;}
 
     /*
     .market__order-fee{color:#538fff;position:relative;padding-left:3.5em;background:url(../images/main/baseline-help-outline-24-px@3x.png) no-repeat center;background-size:auto 12px;font-size:10px;cursor:pointer}
     .market__order-fee span{position:absolute;white-space:nowrap;background:#538fff;top:-1.5em;right:0;color:#f1f6ff;height:26px;line-height:26px;border-radius:3px;padding:0 1em;box-sizing:border-box;display:none;}
     .market__order-fee span:after{content:'';display:block;width:0;height:0;border-top:5px solid #538fff;border-bottom:5px solid transparent;border-right:5px solid transparent;border-left:5px solid transparent;content:'';position:absolute;right:1em;bottom:-10px;}
     */
+}
+
+@media screen and (max-width:767px){
+    .market__bottom{margin-top:0 !important;}
+    .market__order{margin-top:8px;}
+    .market__order-form{height:301px;}
+    .market__order-form-submit{bottom:0;}
 }
 
 .trade-bottom{padding-top:8px;}

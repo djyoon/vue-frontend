@@ -70,7 +70,7 @@ export default {
                     this.$emit("reloadTradeHistory")
 
                 this.last = result.data.last
-                
+
                 let total = new Decimal(0)
                 this.buyFull.forEach((row) => {
                     total = total.plus(row.quantity)
@@ -159,7 +159,7 @@ export default {
             }
         },
         selectPrice(row) {
-          this.$emit("selectPrice", row.price)
+          this.$emit("selectPrice", new Decimal(row.price).toString())
         }
     }
 }
